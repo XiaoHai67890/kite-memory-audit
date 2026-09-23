@@ -1,0 +1,17 @@
+{
+  "recordedAt": "2026-09-23T12:41:00.188Z",
+  "kind": "real local HTTP + real read-only RPC; no payment",
+  "status": 200,
+  "paymentMode": "local-unpaid",
+  "verdict": "consistent",
+  "summary": {
+    "transitionCount": 5,
+    "authorizationUpdateCount": 0,
+    "headSequence": "5"
+  },
+  "block": {
+    "number": "11764865",
+    "hash": "0x9b78759e7124ec4dd7c53db0ffa75fa1c3058e3ae2bdfac6a3e24341f4427faf",
+    "timestamp": "1790166240"
+  }
+}

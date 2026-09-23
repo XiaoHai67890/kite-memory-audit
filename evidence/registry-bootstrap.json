@@ -1,0 +1,19 @@
+{
+  "recordedAt": "2026-09-23T12:35:11.331Z",
+  "kind": "read-only RPC and explorer bytecode comparison; not payment evidence",
+  "chainId": 11155111,
+  "registry": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+  "deploymentTransaction": "0x3c31bb28420c943654155188caaed866d7836ff5aba11bb557b3ed1f24bff997",
+  "deploymentBlock": "11353452",
+  "observedFinalizedBlock": "11764834",
+  "observedFinalizedBlockHash": "0xa31f528e851ed0253dd8575179ba5ef2f09e943bc2a75144dce4db3926004b84",
+  "runtimeCodeHash": "0xcf6373071bf2a31293ce508c6b711c1886b6019cf963acf7919fbaefde8bd5db",
+  "runtimeCodeBytes": 6016,
+  "explorerRuntimeMatch": true,
+  "rpcSource": "https://ethereum-sepolia-rpc.publicnode.com",
+  "explorerSource": "https://sepolia.etherscan.io/address/0xDdf21937ba80b5fF973610877A0955b320C91241#code",
+  "limitations": [
+    "RPC and explorer are trusted sources for this bootstrap.",
+    "Bytecode match is not a security audit or a proof of historical signature validity."
+  ]
+}

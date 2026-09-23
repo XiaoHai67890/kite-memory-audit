@@ -1,0 +1,10 @@
+{
+  "recordedAt": "2026-09-23T12:39:51.028Z",
+  "kind": "real local HTTP + real read-only RPC; no payment",
+  "status": 504,
+  "paymentMode": "local-unpaid",
+  "error": {
+    "code": "RPC_TIMEOUT",
+    "message": "Evidence collection exceeded its time limit."
+  }
+}

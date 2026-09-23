@@ -1,0 +1,285 @@
+{
+  "schemaVersion": "1",
+  "verdict": "consistent",
+  "subject": {
+    "chainId": 11155111,
+    "registry": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+    "spaceId": "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+  },
+  "checks": [
+    {
+      "id": "evidence-shape",
+      "status": "pass",
+      "message": "Typed evidence uses canonical decimal integers, uint64 counters, addresses and bytes32 values."
+    },
+    {
+      "id": "coverage-range",
+      "status": "pass",
+      "message": "Declared log range: 11353452 through 11764865, inclusive."
+    },
+    {
+      "id": "registry-code",
+      "status": "pass",
+      "message": "Snapshot runtime bytecode hash matches the configured registry hash."
+    },
+    {
+      "id": "registration",
+      "status": "pass",
+      "message": "One registration event is present in the declared range."
+    },
+    {
+      "id": "transition-hash",
+      "status": "pass",
+      "message": "Recomputed ERC-8350 ExperienceDelta struct hash compared with emitted transitionId.",
+      "sequence": "1"
+    },
+    {
+      "id": "state-root",
+      "status": "pass",
+      "message": "Recomputed MemoryState hash compared with emitted nextStateRoot.",
+      "sequence": "1"
+    },
+    {
+      "id": "transition-hash",
+      "status": "pass",
+      "message": "Recomputed ERC-8350 ExperienceDelta struct hash compared with emitted transitionId.",
+      "sequence": "2"
+    },
+    {
+      "id": "state-root",
+      "status": "pass",
+      "message": "Recomputed MemoryState hash compared with emitted nextStateRoot.",
+      "sequence": "2"
+    },
+    {
+      "id": "transition-hash",
+      "status": "pass",
+      "message": "Recomputed ERC-8350 ExperienceDelta struct hash compared with emitted transitionId.",
+      "sequence": "3"
+    },
+    {
+      "id": "state-root",
+      "status": "pass",
+      "message": "Recomputed MemoryState hash compared with emitted nextStateRoot.",
+      "sequence": "3"
+    },
+    {
+      "id": "transition-hash",
+      "status": "pass",
+      "message": "Recomputed ERC-8350 ExperienceDelta struct hash compared with emitted transitionId.",
+      "sequence": "4"
+    },
+    {
+      "id": "state-root",
+      "status": "pass",
+      "message": "Recomputed MemoryState hash compared with emitted nextStateRoot.",
+      "sequence": "4"
+    },
+    {
+      "id": "transition-hash",
+      "status": "pass",
+      "message": "Recomputed ERC-8350 ExperienceDelta struct hash compared with emitted transitionId.",
+      "sequence": "5"
+    },
+    {
+      "id": "state-root",
+      "status": "pass",
+      "message": "Recomputed MemoryState hash compared with emitted nextStateRoot.",
+      "sequence": "5"
+    },
+    {
+      "id": "authorization-head",
+      "status": "pass",
+      "message": "Final replayed authorization compared with the snapshot read."
+    },
+    {
+      "id": "event-authorizer",
+      "status": "pass",
+      "message": "Emitted authorizer compared with the configuration active at this event.",
+      "sequence": "1"
+    },
+    {
+      "id": "event-authorizer",
+      "status": "pass",
+      "message": "Emitted authorizer compared with the configuration active at this event.",
+      "sequence": "2"
+    },
+    {
+      "id": "event-authorizer",
+      "status": "pass",
+      "message": "Emitted authorizer compared with the configuration active at this event.",
+      "sequence": "3"
+    },
+    {
+      "id": "event-authorizer",
+      "status": "pass",
+      "message": "Emitted authorizer compared with the configuration active at this event.",
+      "sequence": "4"
+    },
+    {
+      "id": "event-authorizer",
+      "status": "pass",
+      "message": "Emitted authorizer compared with the configuration active at this event.",
+      "sequence": "5"
+    },
+    {
+      "id": "head",
+      "status": "pass",
+      "message": "Replayed terminal transition, state root and sequence compared with the snapshot head."
+    }
+  ],
+  "checkpoint": {
+    "status": "not_provided"
+  },
+  "summary": {
+    "transitionCount": 5,
+    "authorizationUpdateCount": 0,
+    "headSequence": "5"
+  },
+  "evidence": {
+    "chainId": 11155111,
+    "registry": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+    "spaceId": "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564",
+    "block": {
+      "number": "11764865",
+      "hash": "0x9b78759e7124ec4dd7c53db0ffa75fa1c3058e3ae2bdfac6a3e24341f4427faf",
+      "timestamp": "1790166240"
+    },
+    "registryEvidence": {
+      "fromBlock": "11353452",
+      "expectedCodeHash": "0xcf6373071bf2a31293ce508c6b711c1886b6019cf963acf7919fbaefde8bd5db",
+      "actualCodeHash": "0xcf6373071bf2a31293ce508c6b711c1886b6019cf963acf7919fbaefde8bd5db",
+      "source": "https://sepolia.etherscan.io/address/0xDdf21937ba80b5fF973610877A0955b320C91241#code"
+    },
+    "head": {
+      "transitionId": "0xbabfa1db25980fe00dfa1c3fc08665ecb81df997f6fd7c439f1c4cc56241ac7d",
+      "stateRoot": "0x55b383709c4dbe8ee08d3e229d4f14d0c65659eac4198a44f1810f517dce6699",
+      "sequence": "5"
+    },
+    "authorization": {
+      "controller": "0x3d0ab53241A2913D7939ae02f7083169fE7b823B",
+      "authorizer": "0x3d0ab53241A2913D7939ae02f7083169fE7b823B",
+      "configNonce": "0"
+    },
+    "events": [
+      {
+        "blockNumber": "11362262",
+        "blockHash": "0x360f6115288332ccae4ebf40871deb98152d63e67a8dd19b92630cc9cebcdf13",
+        "transactionHash": "0x30d9050761b11e2246172a19ab0d38323ade0a578d12a2fb41e1520dc00caf93",
+        "transactionIndex": 168,
+        "logIndex": 878,
+        "type": "registered",
+        "controller": "0x3d0ab53241A2913D7939ae02f7083169fE7b823B",
+        "authorizer": "0x3d0ab53241A2913D7939ae02f7083169fE7b823B"
+      },
+      {
+        "blockNumber": "11362262",
+        "blockHash": "0x360f6115288332ccae4ebf40871deb98152d63e67a8dd19b92630cc9cebcdf13",
+        "transactionHash": "0x8b927cf262f6858f18698cdd0e08534ef1245cc1cb55ab7795fc136068bdb391",
+        "transactionIndex": 171,
+        "logIndex": 900,
+        "type": "transition",
+        "transitionId": "0x4a7cdcd9477eec11645a43afc83d7f007018af4b3648e33eaffcf951a1e156b0",
+        "nextStateRoot": "0x712d4e806ac862e95c89062e2d70b9231dc9f11cb0624ffb2970579c6b81832c",
+        "authorizer": "0x3d0ab53241A2913D7939ae02f7083169fE7b823B",
+        "delta": {
+          "spaceId": "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564",
+          "sequence": "1",
+          "prevStateRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "deltaCommitment": "0x7311f5e6b1c64cc5f3f16c77b471ce5d53f8090d3e20b056efb0f1922085266e",
+          "provenanceCommitment": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "profileId": "0xac4a313d81b72c5de24109f69fd82139cf5b3df04391fb8e40ad8fde817ed1be",
+          "locatorCommitment": "0x0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      {
+        "blockNumber": "11362262",
+        "blockHash": "0x360f6115288332ccae4ebf40871deb98152d63e67a8dd19b92630cc9cebcdf13",
+        "transactionHash": "0x7c6271ae389e708deee4d7b9960db9b38acf0ab183a6ef7a9bda2ee4ebe89023",
+        "transactionIndex": 172,
+        "logIndex": 901,
+        "type": "transition",
+        "transitionId": "0x689d8185a18fb91508cb22877d973daac40e2cf9b3d1029acd2383384faaec3e",
+        "nextStateRoot": "0x0c1a5ae06be06e09cca58a64cced93a0bad36fb34aa09c90092910c9bd026bb5",
+        "authorizer": "0x3d0ab53241A2913D7939ae02f7083169fE7b823B",
+        "delta": {
+          "spaceId": "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564",
+          "sequence": "2",
+          "prevStateRoot": "0x712d4e806ac862e95c89062e2d70b9231dc9f11cb0624ffb2970579c6b81832c",
+          "deltaCommitment": "0x4cee6ec6ac48784bbc0a91b9ef43b6b2e98b887f60f6b3908fad8f1131a54aa7",
+          "provenanceCommitment": "0xeb52e8e86ea7127050d357f99d6fa68962bde393161cc263dbfa10dd35830e23",
+          "profileId": "0xd9670376cf3ba57abb92989eeb0ff8a76d48666287a9091171d3c9bc9d5af434",
+          "locatorCommitment": "0x0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      {
+        "blockNumber": "11362262",
+        "blockHash": "0x360f6115288332ccae4ebf40871deb98152d63e67a8dd19b92630cc9cebcdf13",
+        "transactionHash": "0xf75f5213c4de6c80de1396f7a817f26744fc247e08f717715e1e89dae9a326c6",
+        "transactionIndex": 173,
+        "logIndex": 902,
+        "type": "transition",
+        "transitionId": "0xeb0464abe6037dfe997c48b2dbe316e5bd96bfe80f6b14a08ebd57cdd3b8abe4",
+        "nextStateRoot": "0x8d7362e62f75ff4fbc9047b6881e42f933de9dd7af0fbad228e8f4228b50bec7",
+        "authorizer": "0x3d0ab53241A2913D7939ae02f7083169fE7b823B",
+        "delta": {
+          "spaceId": "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564",
+          "sequence": "3",
+          "prevStateRoot": "0x0c1a5ae06be06e09cca58a64cced93a0bad36fb34aa09c90092910c9bd026bb5",
+          "deltaCommitment": "0x908827979c87f807d2dfe85e566a809f8eeae2534b9f21de2142b71c5841fc46",
+          "provenanceCommitment": "0x9b763e9fdfa94d4c209583a477eca7445950fe950a3c2770957f800c082fb9c3",
+          "profileId": "0xf847003f2b63074f71c873268d340107107939eb218235cf88ed46caa0905f45",
+          "locatorCommitment": "0x0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      {
+        "blockNumber": "11362262",
+        "blockHash": "0x360f6115288332ccae4ebf40871deb98152d63e67a8dd19b92630cc9cebcdf13",
+        "transactionHash": "0x438f102284aa027d31e4a99a2a71cfb237f84919a21b57ac1333e65df33a1441",
+        "transactionIndex": 177,
+        "logIndex": 921,
+        "type": "transition",
+        "transitionId": "0x154c1e643dfec801e4e227f52ae24147a1cca0260533d258916c07337c2bd09d",
+        "nextStateRoot": "0x280889644f1f2748a27bb973df0c1efde465ae2a1334e705f7cb4c7a72ad5bc0",
+        "authorizer": "0x3d0ab53241A2913D7939ae02f7083169fE7b823B",
+        "delta": {
+          "spaceId": "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564",
+          "sequence": "4",
+          "prevStateRoot": "0x8d7362e62f75ff4fbc9047b6881e42f933de9dd7af0fbad228e8f4228b50bec7",
+          "deltaCommitment": "0x4b21b472936a3e89b1031305bb061705bebdaa7aadecfda134058ac2d973a407",
+          "provenanceCommitment": "0xdb4fb5039bfeece75342d413b8b80ab7c48723bae4838fd1c1e35b6bc505b1d9",
+          "profileId": "0xac4a313d81b72c5de24109f69fd82139cf5b3df04391fb8e40ad8fde817ed1be",
+          "locatorCommitment": "0x2065a4e163948b2408a7cae309a55e1359591ac2f251c488943b40a28951de70"
+        }
+      },
+      {
+        "blockNumber": "11391536",
+        "blockHash": "0xe4ba812465bf52f627df301a4a8614cd965555c22f2eeaf7531c42b43e98e02b",
+        "transactionHash": "0x98d4ecc95ff0380453f9afb6085a820fd9745fd2ed63302e68ce6c707abdfa2f",
+        "transactionIndex": 97,
+        "logIndex": 499,
+        "type": "transition",
+        "transitionId": "0xbabfa1db25980fe00dfa1c3fc08665ecb81df997f6fd7c439f1c4cc56241ac7d",
+        "nextStateRoot": "0x55b383709c4dbe8ee08d3e229d4f14d0c65659eac4198a44f1810f517dce6699",
+        "authorizer": "0x3d0ab53241A2913D7939ae02f7083169fE7b823B",
+        "delta": {
+          "spaceId": "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564",
+          "sequence": "5",
+          "prevStateRoot": "0x280889644f1f2748a27bb973df0c1efde465ae2a1334e705f7cb4c7a72ad5bc0",
+          "deltaCommitment": "0x86e981b1416a25beb712964e2318c7ced687cba7eb6db0fe55b4bd3ac9efd211",
+          "provenanceCommitment": "0x341c5403c7372b323505e406eee75d98bf156b8c5bb879f70b914fe86b5c770f",
+          "profileId": "0xac4a313d81b72c5de24109f69fd82139cf5b3df04391fb8e40ad8fde817ed1be",
+          "locatorCommitment": "0x0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    ],
+    "rpcLabel": "Sepolia ERC-8350 reference test registry"
+  },
+  "limitations": [
+    "This is consistency checking of one RPC snapshot, not an independently verified consensus, receipt-inclusion, or finality proof. The RPC provider and configured registry provenance are trust assumptions.",
+    "Matching runtime bytecode at the snapshot block does not prove historical code identity or proxy implementation history. Only explicitly configured, reviewed registries are supported.",
+    "Authorizer addresses and configuration events are replayed. Transaction signatures, direct-call permissions, ERC-1271 policies, and original registration salt are not independently revalidated.",
+    "No raw memory, commitment preimages, provenance truth, profile semantics, availability, or actual model use is verified.",
+    "A checkpoint beyond this snapshot is insufficient evidence of rollback; compare the same chain, registry, space, and appropriate block/finality before drawing that conclusion."
+  ]
+}

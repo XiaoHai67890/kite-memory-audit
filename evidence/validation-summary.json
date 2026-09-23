@@ -1,0 +1,27 @@
+{
+  "recordedAt": "2026-09-23T12:54:50.574974+00:00",
+  "automatedTests": {
+    "tests": 81,
+    "pass": 81,
+    "fail": 0,
+    "skipped": 0
+  },
+  "typecheck": "passed",
+  "build": "passed",
+  "manifestSchema": "passed with explicitly synthetic maintainer/address; no participant manifest generated",
+  "liveReadOnlyAudit": {
+    "status": "consistent",
+    "block": "11764865",
+    "transitions": 5
+  },
+  "localHttpSmoke": {
+    "status": 200,
+    "verdict": "consistent"
+  },
+  "publicRpcReliability": "One local HTTP attempt timed out (504); a fresh read-only retry succeeded. Both observations are saved.",
+  "realPayment": "not performed; tests use a mocked facilitator",
+  "publicDeployment": "not performed",
+  "githubCommit": "Pre-publication validation snapshot; target repository https://github.com/XiaoHai67890/kite-memory-audit",
+  "dockerImage": "Dockerfile supplied; image not built because Docker is unavailable",
+  "vercelEntrypoint": "tested locally: paid-only, frozen receiver/origin, strict routes; platform deployment pending"
+}
