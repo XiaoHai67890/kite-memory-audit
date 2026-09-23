@@ -1,0 +1,11 @@
+[
+  {
+    "chainId": 11155111,
+    "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+    "fromBlock": "11353452",
+    "expectedCodeHash": "0xcf6373071bf2a31293ce508c6b711c1886b6019cf963acf7919fbaefde8bd5db",
+    "rpcEnv": "SEPOLIA_RPC_URL",
+    "label": "Sepolia ERC-8350 reference test registry",
+    "source": "https://sepolia.etherscan.io/address/0xDdf21937ba80b5fF973610877A0955b320C91241#code"
+  }
+]
