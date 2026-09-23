@@ -1,0 +1,30 @@
+Kite Memory Audit
+
+Original application, evidence collector, HTTP integration, and evidence-replay
+logic in this project are provided under Apache-2.0.
+
+Third-party materials:
+
+1. gokite-ai/kite-x402-services, Apache-2.0
+   https://github.com/gokite-ai/kite-x402-services
+   Source commit: 893a27509648b660bbba626b0da59619a94f04ab
+   src/kite.ts adapts network/token constants from templates/typescript-express/src/kite.ts.
+   Payment integration follows the official verify -> upstream -> settle model.
+   schema/service.schema.json is copied unchanged from that repository.
+   Changes: fixed-precision integer pricing, explicit route and resource URL,
+   bounded/redacted facilitator operations, in-process audit handler and tests.
+
+2. AwareLiquid/AgentMemoryState
+   https://github.com/AwareLiquid/AgentMemoryState
+   Source commit: 81b14054a75852f4300f612fb88c94457e57299f
+   Public v1/v2 test vectors are reused for interoperability tests, with provenance
+   recorded in test/fixtures. They are not original contribution code or real memory.
+   The example Space and registry addresses refer to the project's public Sepolia
+   test deployment. No private witnesses, keys, or salts are accepted by this API.
+
+3. ERC-8350 specification, CC0-1.0
+   https://eips.ethereum.org/EIPS/eip-8350
+   Normative type strings, event signatures, and formulas are implemented for
+   interoperability. ERC-8350 remains Draft; pin and review specification changes.
+
+Dependencies retain their respective licenses. See package-lock.json.

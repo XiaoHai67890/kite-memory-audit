@@ -1,0 +1,160 @@
+openapi: 3.1.0
+info:
+  title: Kite Memory Audit
+  version: 0.1.0
+  description: >-
+    ERC-8350 public memory-history consistency reports. Paid through Kite x402.
+    Reports trust the configured RPC and registry; they do not prove memory truth
+    or historical signature validity. Payment chain and audited chain can differ.
+paths:
+  /healthz:
+    get:
+      summary: Free liveness and configuration summary
+      responses:
+        '200':
+          description: Process is running; external dependencies are not probed.
+  /v1/registries:
+    get:
+      summary: List configured public registry metadata without RPC URLs
+      responses:
+        '200':
+          description: Public registry allowlist
+  /v1/memory/audit:
+    post:
+      summary: Audit a finalized memory-state history and optional checkpoint
+      description: >-
+        Send JSON without query parameters. First request receives an x402 challenge;
+        a compatible client signs the payment authorization and retries with
+        PAYMENT-SIGNATURE. No private memory or keys should be sent. Maximum body 8 KiB.
+      parameters:
+        - name: PAYMENT-SIGNATURE
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Base64 encoded x402 v2 payment payload from the buyer's wallet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuditRequest'
+      responses:
+        '200':
+          description: >-
+            Completed report, charged after successful settlement. Both consistent
+            and inconsistent outcomes represent a delivered report.
+          headers:
+            PAYMENT-RESPONSE:
+              schema:
+                type: string
+              description: Base64 encoded x402 settlement receipt in paid mode
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditReport'
+        '400':
+          description: Invalid request or unconfigured registry; not charged
+        '402':
+          description: Payment required or invalid authorization; audit not executed
+          headers:
+            PAYMENT-REQUIRED:
+              schema:
+                type: string
+              description: Base64 encoded x402 v2 accepted payment requirements
+        '404':
+          description: Memory Space not registered at the requested block
+        '413':
+          description: Body exceeds 8 KiB
+        '422':
+          description: Invalid block range or bounded evidence limit exceeded
+        '502':
+          description: Payment verification or settlement failed; successful report withheld
+        '503':
+          description: >-
+            Evidence incomplete, service at capacity, or dependency failure. Never
+            settled. A partial report may include both failed and unknown checks.
+        '504':
+          description: Evidence collection timed out; not settled
+components:
+  schemas:
+    Bytes32:
+      type: string
+      pattern: '^0x[0-9a-fA-F]{64}$'
+    DecimalUint64:
+      type: string
+      pattern: '^(0|[1-9][0-9]{0,19})$'
+      description: Decimal integer string, maximum 18446744073709551615
+    AuditRequest:
+      type: object
+      additionalProperties: false
+      required: [chainId, registry, spaceId]
+      properties:
+        chainId:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        registry:
+          type: string
+          pattern: '^0x[0-9a-fA-F]{40}$'
+          description: Nonzero configured registry address
+        spaceId:
+          $ref: '#/components/schemas/Bytes32'
+          description: Nonzero Memory Space identifier
+        atBlock:
+          $ref: '#/components/schemas/DecimalUint64'
+          description: Optional finalized block; defaults to the RPC finalized head
+        checkpoint:
+          type: object
+          additionalProperties: false
+          required: [sequence, stateRoot]
+          properties:
+            sequence:
+              $ref: '#/components/schemas/DecimalUint64'
+            stateRoot:
+              $ref: '#/components/schemas/Bytes32'
+            transitionId:
+              $ref: '#/components/schemas/Bytes32'
+    AuditReport:
+      type: object
+      required: [schemaVersion, verdict, subject, checks, checkpoint, summary, evidence, limitations]
+      properties:
+        schemaVersion:
+          const: '1'
+        verdict:
+          enum: [consistent, inconsistent, inconclusive]
+        subject:
+          type: object
+          description: Chain, registry and Memory Space being checked
+        checks:
+          type: array
+          items:
+            type: object
+            required: [id, status, message]
+            properties:
+              id: { type: string }
+              status: { enum: [pass, fail, unknown] }
+              message: { type: string }
+              sequence: { type: string }
+        checkpoint:
+          type: object
+          properties:
+            status:
+              enum: [matches, mismatch, ahead, not_provided, unverifiable]
+            sequence: { type: string }
+        summary:
+          type: object
+          properties:
+            transitionCount: { type: integer }
+            authorizationUpdateCount: { type: integer }
+            headSequence: { type: string }
+        evidence:
+          type: object
+          description: >-
+            Pinned block, runtime code hash, head, authorization state, and decoded
+            public events with transaction/block references. See src/types.ts for
+            the complete typed evidence contract and evidence/live-sepolia-report.json
+            for a real example.
+        limitations:
+          type: array
+          items: { type: string }
