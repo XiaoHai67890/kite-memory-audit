@@ -1,6 +1,7 @@
 import test, { type TestContext } from 'node:test';
 import assert from 'node:assert/strict';
-import { createApp } from '../src/app.js';
+import { createApp, MAX_REPORT_RESPONSE_BYTES } from '../src/app.js';
+import { auditHistory } from '../src/audit.js';
 import type { AppConfig } from '../src/config.js';
 import type { EvidenceSnapshot } from '../src/types.js';
 import { ServiceError } from '../src/errors.js';
@@ -44,6 +45,21 @@ test('local API returns a complete report without exposing RPC URL', async t => 
   const registries = await (await fetch(url + '/v1/registries')).text();
   assert(!registries.includes('SECRET'));
   assert(!registries.includes('rpcUrl'));
+});
+test('oversize report is rejected using serialized UTF-8 bytes without disclosing its evidence', async t => {
+  const value = snapshot();
+  // Enlarge a non-semantic field to exercise the response bound without replaying
+  // thousands of hashes. Multibyte text also detects accidental JS-length checks.
+  value.rpcLabel = '界'.repeat(Math.ceil(MAX_REPORT_RESPONSE_BYTES / 3));
+  const report = auditHistory(value);
+  assert.equal(report.verdict, 'consistent');
+  assert(JSON.stringify(report).length < MAX_REPORT_RESPONSE_BYTES);
+  const url = await serve(t, { collect: async () => value });
+  const response = await post(url, request);
+  assert.equal(response.status, 422);
+  assert.deepEqual(await response.json(), {
+    error: { code: 'REPORT_TOO_LARGE', message: 'The complete audit report exceeds the response size limit.' },
+  });
 });
 test('validation rejects arbitrary URLs, private payloads, numbers, and unknown registry before payment or RPC', async t => {
   let paid = 0, queried = 0;

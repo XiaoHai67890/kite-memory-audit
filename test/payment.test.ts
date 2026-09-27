@@ -8,7 +8,8 @@ import type { PaymentPayload, PaymentRequired } from "@x402/core/types";
 import { decodePaymentRequiredHeader, decodePaymentResponseHeader, encodePaymentSignatureHeader } from "@x402/core/http";
 import { KITE_MAINNET, KITE_TESTNET, kitePriceAmount, type KiteNetworkName } from "../src/kite.js";
 import { createPaymentMiddleware, FACILITATOR_MAX_INFLIGHT_PER_OPERATION, type PaymentOptions } from "../src/payment.js";
-import { createApp, type AppDependencies } from "../src/app.js";
+import { createApp, MAX_REPORT_RESPONSE_BYTES, type AppDependencies } from "../src/app.js";
+import { auditHistory } from "../src/audit.js";
 import type { AppConfig } from "../src/config.js";
 import type { EvidenceSnapshot } from "../src/types.js";
 
@@ -301,6 +302,29 @@ function unknownEvidence(mixedFailure: boolean): EvidenceSnapshot {
     events: [], rpcLabel: "synthetic-offline-test",
   };
 }
+
+test("real app rejects an otherwise complete oversize report after verification without settlement", async t => {
+  const events: string[] = [];
+  const snapshot = unknownEvidence(false);
+  snapshot.events = [{
+    type: "registered", controller: PAY_TO, authorizer: PAYER, blockNumber: "1",
+    blockHash: snapshot.block.hash, transactionHash: `0x${"55".repeat(32)}`,
+    transactionIndex: 0, logIndex: 0,
+  }];
+  snapshot.rpcLabel = "界".repeat(Math.ceil(MAX_REPORT_RESPONSE_BYTES / 3));
+  assert.equal(auditHistory(snapshot).verdict, "consistent");
+  const { base, headers } = await serveRealApp(t, events, async () => {
+    events.push("collect");
+    return snapshot;
+  });
+  const response = await fetch(`${base}/v1/memory/audit`, { method: "POST", headers, body: auditBody });
+  assert.equal(response.status, 422);
+  assert.deepEqual(await response.json(), {
+    error: { code: "REPORT_TOO_LARGE", message: "The complete audit report exceeds the response size limit." },
+  });
+  assert.equal(response.headers.get("payment-response"), null);
+  assert.deepEqual(events, ["verify", "collect"]);
+});
 
 for (const mixedFailure of [false, true]) {
   test(`real app does not settle incomplete evidence (${mixedFailure ? "mixed fail and unknown" : "unknown only"})`, async t => {
