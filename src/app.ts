@@ -8,6 +8,9 @@ import { ServiceError } from './errors.js';
 import type { AppConfig } from './config.js';
 import type { AuditRequest, EvidenceSnapshot, RegistryConfig } from './types.js';
 
+// Keep the complete report below hosting response limits before x402 settles.
+export const MAX_REPORT_RESPONSE_BYTES = 4_000_000;
+
 export interface AppDependencies {
   collect?: (request: AuditRequest, registry: RegistryConfig) => Promise<EvidenceSnapshot>;
   payment?: RequestHandler;
@@ -66,9 +69,14 @@ export function createApp(config: AppConfig, dependencies: AppDependencies = {})
       const request = res.locals.auditRequest as AuditRequest;
       const snapshot = await (dependencies.collect ?? collectEvidence)(request, res.locals.registry as RegistryConfig);
       const report = auditHistory(snapshot, request.checkpoint);
+      const body = JSON.stringify(report);
+      if (Buffer.byteLength(body, 'utf8') > MAX_REPORT_RESPONSE_BYTES) {
+        throw new ServiceError('REPORT_TOO_LARGE', 'The complete audit report exceeds the response size limit.', 422);
+      }
       // Inconclusive reports are service failures and are not settled by x402.
       // A complete report finding a mismatch is still a successfully delivered audit.
-      res.status(report.verdict === 'inconclusive' || report.checks.some(check => check.status === 'unknown') ? 503 : 200).json(report);
+      res.status(report.verdict === 'inconclusive' || report.checks.some(check => check.status === 'unknown') ? 503 : 200)
+        .type('application/json').send(body);
     } catch (error) { next(error); }
     finally { active--; }
   });
