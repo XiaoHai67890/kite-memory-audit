@@ -10,14 +10,30 @@ and adversarial tests. Reused vectors/schema/network constants are attributed in
 NOTICE; the original contribution is the collector, report logic and service
 integration, not a copy of upstream history.
 
+## Second contribution: payment verification client (2026-09-27)
+
+New original code adds strict Kite x402 quote validation, an EOA signing adapter,
+a single paid HTTP request, persistent authorization-nonce claims, and independent
+read-only settlement-receipt verification. It checks chain, token, payer, receiver,
+amount, authorization nonce, block membership, confirmations and reorganization.
+Unknown outcomes never automatically retry payment. The server now rejects
+oversized reports before settlement. See CLIENT.md for the CLI and trust limits.
+
+Local validation: 140 automated tests, type checking and build pass. Test signatures
+use a publicly known test key; HTTP/facilitator/chain responses are simulated.
+These tests are not real payment evidence. Deployment and real participant
+payment remain incomplete and must not be claimed as completed direction-01
+acceptance. Submit only this round's new public commits as weekly code progress.
+
 ## Evidence to complete before submitting
 
 - [x] Activity dashboard confirms a verified wallet and bound GitHub account `XiaoHai67890`.
-- [ ] Commit the actual reviewed implementation using the contributor's own Git
+- [x] Commit the first implementation using the contributor's own Git
       name/email and GitHub identity, inside the activity's current statistical week.
-- [ ] Publish the source repository and record the exact commit URL.
+- [x] Publish the first source repository (XiaoHai67890/kite-memory-audit).
 - [ ] Deploy to a public HTTPS origin and configure the actual receiving address.
-- [ ] Run `npm run check` and `npm run build`; save the CI workflow URL.
+- [x] Run `npm run check` and `npm run build`; first publication CI passed.
+      Record a new successful CI URL for the second contribution after publication.
 - [ ] Generate and validate the service manifest with actual maintainer/address.
 - [ ] Capture an unpaid request returning 402, including decoded PAYMENT-REQUIRED.
 - [ ] Resolve the current Passport/Kite payment-network compatibility prerequisite

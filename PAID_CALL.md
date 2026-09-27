@@ -4,6 +4,12 @@ Reviewed on 2026-09-23. **A real participant payment is still pending.** Mocked
 facilitator tests, an unpaid 402, and read-only Sepolia reports are separate
 evidence; none proves that a Passport payment succeeded.
 
+The 2026-09-27 client addition provides strict quote checks, EOA EIP-3009 signing
+integration, one-attempt submission and read-only receipt verification. See
+[CLIENT.md](./CLIENT.md). It does not resolve Passport network compatibility or
+add support for Passport smart-wallet signatures. No real payment was made by
+the automated tests.
+
 ## Resolve the Passport network prerequisite first
 
 The official [Kite x402 service README, commit 893a275](https://github.com/gokite-ai/kite-x402-services/blob/893a27509648b660bbba626b0da59619a94f04ab/README.md#test-with-a-kite-passport-agent)

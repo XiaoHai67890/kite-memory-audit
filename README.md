@@ -5,11 +5,14 @@ compares an optional checkpoint, and returns a reproducible evidence report.
 The service implements Kite x402 payment per completed report. Current Passport
 payer compatibility requires confirmation; see [the paid-call handoff](./PAID_CALL.md).
 
-[中文快速开始](./START_HERE.zh-CN.md) · [API definition](./openapi.yaml) · [Submission checklist](./SUBMISSION.md)
+[中文快速开始](./START_HERE.zh-CN.md) · [支付验收客户端](./CLIENT.md) · [API definition](./openapi.yaml) · [Submission checklist](./SUBMISSION.md)
 
-**Status: local implementation with a real, read-only Sepolia report.** Automated
-payment tests use a fake facilitator. No public service deployment, real Passport
-payment, GitHub publication, or bounty acceptance is claimed.
+**Status: implementation and tests, with a real, read-only Sepolia report.**
+The second-week client work adds strict quote validation, one-shot EOA payment
+execution, a persistent nonce journal, and read-only receipt verification.
+This week's work has not been newly deployed or paid on-chain. Automated payment
+tests are not real payment evidence. Passport compatibility and bounty acceptance
+remain unconfirmed; see [CLIENT.md](./CLIENT.md).
 
 ## What the service checks
 
@@ -94,10 +97,14 @@ response. A complete report finding an inconsistency is a delivered service and
 is charged. Missing evidence, RPC errors, validation errors, capacity errors,
 and any report containing an unknown check are non-2xx and not settled by the
 handler. Settlement failure prevents release of the successful report.
+The complete report is limited to **4,000,000 bytes before settlement**; an
+oversized report returns HTTP 422 without attempting settlement.
 
 An ambiguous settlement timeout can still mean the transaction landed on-chain.
 **Inspect the payment receipt/chain before retrying with a new authorization.**
-This MVP has no durable settlement reconciliation or report-recovery database.
+The client can retain nonce claims and recheck an existing transaction's receipt.
+The server still has no durable report-recovery database, and the client cannot
+recover a report that was lost after settlement.
 
 The payment chain and audited chain are distinct: the example audits Ethereum
 Sepolia history and pays on Kite testnet. This is not a cross-chain migration or
@@ -133,7 +140,7 @@ endpoints are rejected. Body limit: 8 KiB.
 | 400 / 413 | Invalid input / oversized request; not chargeable |
 | 402 | Missing/invalid payment; includes x402 `PAYMENT-REQUIRED` when appropriate |
 | 404 | Unknown route or Memory Space |
-| 422 | Evidence/query limit exceeded; not chargeable |
+| 422 | Evidence/query/report-size limit exceeded; not chargeable |
 | 502 / 503 / 504 | Payment/RPC/service failure or incomplete report; successful report withheld |
 
 A report may contain both contradictions and unknown checks. Its verdict can be
@@ -145,7 +152,9 @@ A report may contain both contradictions and unknown checks. Its verdict can be
 `npm run check` covers independent public golden vectors, tampering, missing
 events, rotation, checkpoints, malformed RPC responses, finality/reorg behavior,
 bounded collection, HTTP validation and actual x402 SDK buffering with a mocked
-facilitator. Unit tests are deterministic and do not use keys or send payments.
+facilitator. The new client tests cover quote/signature restrictions, receipt
+matching and single-attempt behavior. Tests do not use user wallet credentials
+or send on-chain payments; run the checks to obtain the current result.
 
 `evidence/registry-bootstrap.json` records the real RPC/explorer bytecode comparison.
 `evidence/live-sepolia-report.json`, when present, is a read-only live report.

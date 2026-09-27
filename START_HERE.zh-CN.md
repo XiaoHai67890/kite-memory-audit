@@ -39,12 +39,18 @@ curl -sS http://127.0.0.1:8080/v1/memory/audit \
 1. 将 `.env.example` 复制为 `.env`，填写收款钱包的**公开地址** `PAY_TO`。
 2. 初次部署保持 `KITE_NETWORK=testnet`，填写真实 `PUBLIC_BASE_URL`。
 3. 按 README 使用 Docker 或 Node 部署到公网 HTTPS。
-4. 用自己的 Kite Passport sandbox Agent 完成一次 pieUSD 付款调用，保存响应和交易哈希。
+4. 先按 `PAID_CALL.md` 确认付款客户端与 Kite 网络兼容；确认后完成本人授权的真实付款，保存响应和交易哈希。第二周新增的 EOA 客户端用法见 `CLIENT.md`，不代表已验证 Passport 兼容。
 5. 配置本人 `GITHUB_USERNAME` 后执行 `npm run manifest`，生成通过官方 Schema 的服务清单。
 6. 按 `SUBMISSION.md` 整理本周真实 Commit 和证据，再提交活动。
 
 服务器不需要私钥或助记词。账户授权和付款由本人钱包/Passport 完成。
-当前没有宣称已公网部署、已真实付款、已推送 GitHub 或已通过活动审核。
+源码已公开到 GitHub；当前尚未完成公网部署、真实付款或活动最终验收。
+
+## 第二周新增
+
+见 [支付验收客户端](./CLIENT.md)：先检查 x402 报价，再通过调用者已有钱包签名接口
+发送一次付款请求，随后独立读取 Kite 回执。持久化 nonce 记录防止同一授权重复发送；
+超时或证据不足时标记结果未知，不自动重付。客户端只支持 EOA EIP-3009。
 
 ## 如何读报告
 

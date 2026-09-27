@@ -12,6 +12,11 @@ and includes the reviewed registry file in the function bundle. This allows
 15 seconds for payment verification, 45 seconds for evidence collection, and
 15 seconds for settlement, with additional startup/response headroom.
 
+The service rejects reports larger than 4,000,000 UTF-8 bytes with HTTP 422
+**before settlement**, below Vercel's 4.5 MB function-response limit. Keep this
+guard when deploying; a platform rejection after settlement cannot deliver a
+paid report. This guard does not eliminate network loss after settlement.
+
 Vercel currently documents a 300-second maximum for Hobby with Fluid compute.
 Legacy Hobby functions without Fluid are capped at 60 seconds and are unsuitable
 for this API's full request budget. Vercel's Hobby plan is restricted to personal,
