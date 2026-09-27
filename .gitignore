@@ -9,3 +9,4 @@ evidence/*.local.json
 service.json
 .DS_Store
 .vercel/
+.payment-attempts/
