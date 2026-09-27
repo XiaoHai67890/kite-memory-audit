@@ -1,0 +1,11 @@
+{
+  "policy": {
+    "url": "https://YOUR-SERVICE.example/v1/memory/audit",
+    "network": "testnet",
+    "payTo": "0x0000000000000000000000000000000000000000",
+    "maxAmount": "1000000000000000"
+  },
+  "payer": "0x0000000000000000000000000000000000000000",
+  "receiptRpcUrl": "https://rpc-testnet.gokite.ai",
+  "journalDirectory": ".payment-attempts"
+}
