@@ -10,6 +10,8 @@ import { verifyPaymentReceipt, type ReceiptExpectation, type ReceiptRpc, type Re
 import { kiteChainByName } from './kite.js';
 import { parseAuditRequest, addressSchema, hashSchema } from './validation.js';
 import type { AuditRequest } from './types.js';
+import { parseAuditReport } from './report-verifier.js';
+import { parseUnambiguousJson } from './report-files.js';
 
 export const MAX_CLIENT_RESPONSE_BYTES = 4_000_000;
 const uint256 = z.string().refine(v => /^(0|[1-9][0-9]{0,77})$/.test(v) && BigInt(v) < 2n ** 256n);
@@ -42,7 +44,12 @@ export interface PaidCallEvidence {
   requestSha256: string; resourceUrl: string; attempt?: Attempt;
   httpStatus?: number; receipt?: ReceiptVerification; expectation?: ReceiptExpectation;
   report?: { sha256: string; verdict: string; subject: AuditRequest };
+  reportCapture?: { status: 'saved' | 'failed'; sha256: string };
   limitations: string[];
+}
+export interface ReportCapture {
+  request: AuditRequest; reportText: string; reportSha256: string;
+  requestSha256: string; resourceUrl: string;
 }
 const limitations = [
   'The payment authorization binds the token transfer, not the HTTP body. The request digest is a local correlation record, not an on-chain commitment.',
@@ -65,7 +72,9 @@ async function readBody(response: Response): Promise<string> {
       if (total > MAX_CLIENT_RESPONSE_BYTES) throw new Error('response_too_large');
       chunks.push(part.value);
     }
-    return new TextDecoder('utf-8', { fatal: true }).decode(Buffer.concat(chunks));
+    // Preserve a BOM so JSON parsing rejects it instead of silently changing
+    // the response bytes represented by the captured text and its digest.
+    return new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(Buffer.concat(chunks));
   } finally { await reader.cancel().catch(() => {}); }
 }
 
@@ -154,12 +163,44 @@ const reportSchema = z.object({
   evidence: z.object({ block: z.object({ number: uint256, hash: hashSchema }) }),
 });
 
+function matchingReport(raw: unknown, requested: AuditRequest) {
+  const report = reportSchema.parse(raw);
+  if (report.subject.chainId !== requested.chainId || report.subject.registry !== requested.registry
+    || report.subject.spaceId !== requested.spaceId || (requested.atBlock && report.evidence.block.number !== requested.atBlock)) {
+    throw new Error('report_subject_mismatch');
+  }
+  if (requested.checkpoint
+    ? report.checkpoint.status === 'not_provided' || report.checkpoint.sequence !== requested.checkpoint.sequence
+    : report.checkpoint.status !== 'not_provided' || report.checkpoint.sequence !== undefined) {
+    throw new Error('report_checkpoint_mismatch');
+  }
+  return report;
+}
+
+/** A merchant must not smuggle our reusable authorization into report prose. */
+function rejectPaymentEcho(raw: unknown, signature: string, paymentHeader: string): void {
+  const pending = [raw];
+  const normalizedSignature = signature.toLowerCase();
+  while (pending.length) {
+    const value = pending.pop();
+    if (typeof value === 'string') {
+      if (value.toLowerCase().includes(normalizedSignature) || value.includes(paymentHeader)) {
+        throw new Error('report_contains_payment_authorization');
+      }
+    } else if (value && typeof value === 'object') {
+      pending.push(...Object.values(value));
+    }
+  }
+}
+
 export interface PaidAuditOptions {
   policy: PaymentPolicy; request: unknown; payer: string; rpc: ReceiptRpc;
   /** Invoked once, only after preflight. May present a wallet approval to its user. */
   sign: (quote: CheckedQuote) => Promise<unknown>;
   /** Persist/claim the payer+network+nonce before sending; throw to prevent duplicate execution. */
   beforeSend: (attempt: Attempt) => Promise<void>;
+  /** Save the complete, bounded report locally. Receives no payment signature or response headers. */
+  captureReport?: (capture: ReportCapture) => Promise<void>;
   fetcher?: FetchClient;
 }
 
@@ -184,6 +225,7 @@ export async function executePaidAudit(options: PaidAuditOptions): Promise<PaidC
   };
   try { await options.beforeSend(structuredClone(attempt)); }
   catch { return { ...base, attempt, status: 'rejected', code: 'attempt_not_claimed' }; }
+  const paymentHeader = encodePaymentSignatureHeader(payment);
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 150_000);
   let response: Response;
@@ -191,41 +233,55 @@ export async function executePaidAudit(options: PaidAuditOptions): Promise<PaidC
   try {
     response = await (options.fetcher ?? fetch)(policy.url, {
       method: 'POST', body: JSON.stringify(preflight.request), credentials: 'omit', redirect: 'manual', signal: controller.signal,
-      headers: { 'Content-Type': 'application/json', 'PAYMENT-SIGNATURE': encodePaymentSignatureHeader(payment) },
+      headers: { 'Content-Type': 'application/json', 'PAYMENT-SIGNATURE': paymentHeader },
     });
     text = await readBody(response);
   } catch { return { ...base, attempt, status: 'unknown', code: 'paid_response_unavailable' }; }
   finally { clearTimeout(timer); }
+  // Capture before checking settlement so a missing/uncertain payment receipt
+  // does not discard an otherwise matching report. A failed local save never
+  // causes another payment; still investigate the original settlement below.
+  let reportCapture: PaidCallEvidence['reportCapture'];
+  if (options.captureReport && response.status === 200) {
+    const digest = sha256(text);
+    try {
+      const raw = parseUnambiguousJson(text);
+      matchingReport(raw, preflight.request);
+      const full = parseAuditReport(raw);
+      // Examine decoded strings so JSON Unicode escapes cannot hide a copy.
+      rejectPaymentEcho(raw, (payment.payload as { signature: string }).signature, paymentHeader);
+      if (full.evidence.chainId !== preflight.request.chainId
+        || full.evidence.registry.toLowerCase() !== preflight.request.registry.toLowerCase()
+        || full.evidence.spaceId.toLowerCase() !== preflight.request.spaceId.toLowerCase()) {
+        throw new Error('evidence_subject_mismatch');
+      }
+      await options.captureReport({ request: structuredClone(preflight.request), reportText: text,
+        reportSha256: digest, requestSha256: preflight.requestSha256, resourceUrl: policy.url });
+      reportCapture = { status: 'saved', sha256: digest };
+    } catch { reportCapture = { status: 'failed', sha256: digest }; }
+  }
+  const responseBase = { ...base, ...(reportCapture ? { reportCapture } : {}) };
   const receiptHeader = response.headers.get('payment-response');
-  if (!receiptHeader) return { ...base, attempt, httpStatus: response.status, status: 'unknown', code: 'settlement_receipt_missing' };
+  if (!receiptHeader) return { ...responseBase, attempt, httpStatus: response.status, status: 'unknown', code: 'settlement_receipt_missing' };
   let settlement: z.infer<typeof responseSchema>;
   try { settlement = responseSchema.parse(decodeBoundedBase64Json(receiptHeader)); }
-  catch { return { ...base, attempt, httpStatus: response.status, status: 'unknown', code: 'settlement_receipt_invalid' }; }
+  catch { return { ...responseBase, attempt, httpStatus: response.status, status: 'unknown', code: 'settlement_receipt_invalid' }; }
   if (settlement.network !== kiteChainByName(policy.network).network
     || (settlement.payer && settlement.payer.toLowerCase() !== payer.toLowerCase())
     || (settlement.amount !== undefined && settlement.amount !== auth.value)) {
-    return { ...base, attempt, httpStatus: response.status, status: 'unknown', code: 'settlement_metadata_mismatch' };
+    return { ...responseBase, attempt, httpStatus: response.status, status: 'unknown', code: 'settlement_metadata_mismatch' };
   }
   const expectation: ReceiptExpectation = {
     network: policy.network, transaction: settlement.transaction, payer, payTo: quote.requirements.payTo,
     amount: auth.value, nonce: auth.nonce,
   };
   const receipt = await verifyPaymentReceipt(expectation, options.rpc);
-  const evidence = { ...base, attempt, httpStatus: response.status, expectation, receipt };
+  const evidence = { ...responseBase, attempt, httpStatus: response.status, expectation, receipt };
   if (receipt.status !== 'verified') return { ...evidence, status: 'unknown', code: 'settlement_not_verified' };
   if (response.status !== 200) return { ...evidence, status: 'unknown', code: 'settled_without_http_200' };
   try {
-    const report = reportSchema.parse(JSON.parse(text));
-    const requested = preflight.request;
-    if (report.subject.chainId !== requested.chainId || report.subject.registry !== requested.registry
-      || report.subject.spaceId !== requested.spaceId || (requested.atBlock && report.evidence.block.number !== requested.atBlock)) {
-      throw new Error('report_subject_mismatch');
-    }
-    if (requested.checkpoint
-      ? report.checkpoint.status === 'not_provided' || report.checkpoint.sequence !== requested.checkpoint.sequence
-      : report.checkpoint.status !== 'not_provided' || report.checkpoint.sequence !== undefined) {
-      throw new Error('report_checkpoint_mismatch');
-    }
+    const report = matchingReport(JSON.parse(text), preflight.request);
+    if (reportCapture?.status === 'failed') return { ...evidence, status: 'unknown', code: 'report_capture_failed' };
     return { ...evidence, status: 'verified', code: 'settlement_verified_report_received',
       report: { sha256: sha256(text), verdict: report.verdict, subject: report.subject } };
   } catch { return { ...evidence, status: 'unknown', code: 'settled_without_matching_report' }; }
