@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1",
+  "verdict": "inconclusive",
+  "subject": {
+    "chainId": 11155111,
+    "registry": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+    "spaceId": "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+  },
+  "checks": [
+    {
+      "id": "evidence-shape",
+      "status": "pass",
+      "message": "Typed evidence uses canonical decimal integers, uint64 counters, addresses and bytes32 values."
+    },
+    {
+      "id": "coverage-range",
+      "status": "pass",
+      "message": "Declared log range: 11353452 through 11830421, inclusive."
+    },
+    {
+      "id": "registry-code",
+      "status": "pass",
+      "message": "Snapshot runtime bytecode hash matches the configured registry hash."
+    },
+    {
+      "id": "registration",
+      "status": "unknown",
+      "message": "Registration evidence is missing; complete history cannot be established."
+    },
+    {
+      "id": "authorization-head",
+      "status": "unknown",
+      "message": "No event establishes the snapshot authorization."
+    },
+    {
+      "id": "head",
+      "status": "unknown",
+      "message": "Snapshot head indicates missing later transition events."
+    }
+  ],
+  "checkpoint": {
+    "status": "not_provided"
+  },
+  "summary": {
+    "transitionCount": 0,
+    "authorizationUpdateCount": 0,
+    "headSequence": "5"
+  },
+  "evidence": {
+    "chainId": 11155111,
+    "registry": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+    "spaceId": "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564",
+    "block": {
+      "number": "11830421",
+      "hash": "0xa241734919d8e192fdbab15f92702b113d92da48bd78c91b88c006715642fb45",
+      "timestamp": "1790961504"
+    },
+    "registryEvidence": {
+      "fromBlock": "11353452",
+      "expectedCodeHash": "0xcf6373071bf2a31293ce508c6b711c1886b6019cf963acf7919fbaefde8bd5db",
+      "actualCodeHash": "0xcf6373071bf2a31293ce508c6b711c1886b6019cf963acf7919fbaefde8bd5db",
+      "source": "https://sepolia.etherscan.io/address/0xDdf21937ba80b5fF973610877A0955b320C91241#code"
+    },
+    "head": {
+      "transitionId": "0xbabfa1db25980fe00dfa1c3fc08665ecb81df997f6fd7c439f1c4cc56241ac7d",
+      "stateRoot": "0x55b383709c4dbe8ee08d3e229d4f14d0c65659eac4198a44f1810f517dce6699",
+      "sequence": "5"
+    },
+    "authorization": {
+      "controller": "0x3d0ab53241A2913D7939ae02f7083169fE7b823B",
+      "authorizer": "0x3d0ab53241A2913D7939ae02f7083169fE7b823B",
+      "configNonce": "0"
+    },
+    "events": [],
+    "rpcLabel": "Sepolia ERC-8350 reference test registry"
+  },
+  "limitations": [
+    "This is consistency checking of one RPC snapshot, not an independently verified consensus, receipt-inclusion, or finality proof. The RPC provider and configured registry provenance are trust assumptions.",
+    "Matching runtime bytecode at the snapshot block does not prove historical code identity or proxy implementation history. Only explicitly configured, reviewed registries are supported.",
+    "Authorizer addresses and configuration events are replayed. Transaction signatures, direct-call permissions, ERC-1271 policies, and original registration salt are not independently revalidated.",
+    "No raw memory, commitment preimages, provenance truth, profile semantics, availability, or actual model use is verified.",
+    "A checkpoint beyond this snapshot is insufficient evidence of rollback; compare the same chain, registry, space, and appropriate block/finality before drawing that conclusion."
+  ]
+}

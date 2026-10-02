@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1",
+  "status": "unknown",
+  "code": "EVIDENCE_INCOMPLETE",
+  "checks": [
+    {
+      "id": "request-schema",
+      "status": "pass",
+      "message": "The independent audit request has the supported shape."
+    },
+    {
+      "id": "policy-schema",
+      "status": "pass",
+      "message": "The independent registry policy has the supported shape."
+    },
+    {
+      "id": "report-schema",
+      "status": "pass",
+      "message": "The complete report has the supported bounded shape."
+    },
+    {
+      "id": "request-policy",
+      "status": "pass",
+      "message": "The request chain and registry must match the independently supplied policy."
+    },
+    {
+      "id": "report-subject",
+      "status": "pass",
+      "message": "The declared report subject must match the original request."
+    },
+    {
+      "id": "evidence-subject",
+      "status": "pass",
+      "message": "The evidence subject must match the original request."
+    },
+    {
+      "id": "snapshot-block",
+      "status": "pass",
+      "message": "When the request specifies a block, the evidence must use that exact height."
+    },
+    {
+      "id": "coverage-policy",
+      "status": "pass",
+      "message": "Declared log coverage must start at the independently configured block."
+    },
+    {
+      "id": "registry-policy",
+      "status": "pass",
+      "message": "Both declared and observed bytecode hashes must match the independent policy."
+    },
+    {
+      "id": "declared-verdict",
+      "status": "pass",
+      "message": "The declared verdict must agree with the recomputed verdict."
+    },
+    {
+      "id": "declared-checkpoint",
+      "status": "pass",
+      "message": "Checkpoint status and sequence must be recomputed using the original requested root and transition."
+    },
+    {
+      "id": "declared-summary",
+      "status": "pass",
+      "message": "Declared event counts and terminal sequence must agree with replay."
+    },
+    {
+      "id": "declared-checks",
+      "status": "pass",
+      "message": "All semantic check identifiers, statuses, sequences, duplicates, and ordering must agree with replay."
+    },
+    {
+      "id": "replay-completeness",
+      "status": "unknown",
+      "message": "Replay contains unknown checks; the supplied evidence cannot support conclusive verification."
+    }
+  ],
+  "replayVerdict": "inconclusive",
+  "limitations": [
+    "Verified means offline internal consistency with the supplied request and independent registry policy. It is not proof that the supplied events or snapshot occurred on chain.",
+    "The policy must come from a separately trusted configuration. This verifier cannot authenticate its provenance or the RPC source, prove log completeness, consensus, finality, freshness, or historical bytecode identity.",
+    "Replay uses the same ERC-8350 audit engine as the service, not an independent implementation. A correctly reported inconsistent history can pass report verification; consult replayVerdict.",
+    "Free-form report messages, provenance labels, and limitations are not endorsed. Memory truth, commitment preimages, signature policies, payment settlement, and binding a payment to this HTTP response are not verified."
+  ]
+}

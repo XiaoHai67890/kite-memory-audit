@@ -1,0 +1,545 @@
+{
+  "schemaVersion": "1",
+  "evidenceKind": "read-only-live-rpc-audit",
+  "clientWeekLabel": "week3",
+  "clientWeekDate": "2026-10-03",
+  "clientTimezone": "Asia/Shanghai",
+  "startedAt": "2026-10-02T17:34:20.736Z",
+  "finishedAt": "2026-10-02T17:34:25.497Z",
+  "elapsedMs": 4761,
+  "exitCode": 2,
+  "completed": true,
+  "rpcSource": {
+    "name": "PublicNode Ethereum Sepolia",
+    "url": "https://ethereum-sepolia-rpc.publicnode.com",
+    "chainId": 11155111
+  },
+  "execution": {
+    "nodeVersion": "v22.23.2",
+    "command": [
+      "node",
+      "--import",
+      "<local read-only fetch metadata recorder>",
+      "--import",
+      "tsx",
+      "scripts/audit-live.ts",
+      "examples/request.json",
+      "evidence/week3-live-sepolia-report.json"
+    ],
+    "npmScriptEquivalent": "npm run audit:live -- examples/request.json evidence/week3-live-sepolia-report.json",
+    "branch": "week3/report-verification",
+    "sourceRevision": "ec2c7ee48213cd39840ed831e9a7ab32c3bd4e39",
+    "sourceDigests": [
+      {
+        "path": "scripts/audit-live.ts",
+        "sha256": "8de514cd2e002db415f47a33323096442c45f03ca202622995fcbb611c84a486"
+      },
+      {
+        "path": "src/rpc.ts",
+        "sha256": "aae8043504021207695a7cbe5abdb3fd5feefbfd5473be76f0fe9adb974abf23"
+      },
+      {
+        "path": "src/audit.ts",
+        "sha256": "ba05131c311477d0e7b56c29c3255aae8fccddce6674812eee09b7bdf214df75"
+      },
+      {
+        "path": "src/erc8350.ts",
+        "sha256": "58852b2f174a7f99eef267ae493bec5495903fc0df57d69a1054b89967a386a0"
+      },
+      {
+        "path": "src/registry-abi.ts",
+        "sha256": "8b1ac01c138ad171f5a5bc9c5dd197e3e713eda92c37ac5676c800e72e5058dc"
+      },
+      {
+        "path": "src/types.ts",
+        "sha256": "2fe0462f35be62376c234c8baa0812fe49fe747de325751a7dc4a3d97ef0ad50"
+      },
+      {
+        "path": "src/config.ts",
+        "sha256": "1191d9afe8cecf7b13632812a27ffcc5ab96ff8504fc8d3e003d02e07a02c3bc"
+      },
+      {
+        "path": "src/validation.ts",
+        "sha256": "79038b68d45391c15148bb7537a98f536b301aceb0d82bc556aa31200a98fc1a"
+      },
+      {
+        "path": "src/errors.ts",
+        "sha256": "65f949ea14d7e74c76c0918c6d2ac836eea0413aed094c6c396f196890bb4d88"
+      },
+      {
+        "path": "package-lock.json",
+        "sha256": "b8b758fd049ea8b4c5f97eba55f98bb809714505825bb13f231538d6a6f05d50"
+      }
+    ],
+    "inputDigests": [
+      {
+        "path": "config/registries.json",
+        "sha256": "4c8debfddea4ffbf907ae39b9848f8949774fd6cf08f02523389597bd9a03188"
+      },
+      {
+        "path": "examples/request.json",
+        "sha256": "98b9bff9897d66743a04abeb8425bbab6688b995c4148425509405d4a5706ab1"
+      }
+    ],
+    "instrumentation": "Fetch wrapper records each actual read-only JSON-RPC request and a SHA-256 digest of its response body; it passes the response to the unchanged audit CLI. No request retries or parameter substitutions are performed."
+  },
+  "report": {
+    "path": "evidence/week3-live-sepolia-report.json",
+    "sha256": "549c68426dfef2e9039b8edfe22e4c958a33d0f4b6682c2c298769e5e7ebc326",
+    "bytes": 3481,
+    "verdict": "inconclusive",
+    "subject": {
+      "chainId": 11155111,
+      "registry": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+      "spaceId": "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+    },
+    "finalizedBlock": {
+      "number": "11830421",
+      "hash": "0xa241734919d8e192fdbab15f92702b113d92da48bd78c91b88c006715642fb45",
+      "timestamp": "1790961504"
+    },
+    "head": {
+      "transitionId": "0xbabfa1db25980fe00dfa1c3fc08665ecb81df997f6fd7c439f1c4cc56241ac7d",
+      "stateRoot": "0x55b383709c4dbe8ee08d3e229d4f14d0c65659eac4198a44f1810f517dce6699",
+      "sequence": "5"
+    },
+    "eventCount": 0,
+    "checks": [
+      {
+        "id": "evidence-shape",
+        "status": "pass"
+      },
+      {
+        "id": "coverage-range",
+        "status": "pass"
+      },
+      {
+        "id": "registry-code",
+        "status": "pass"
+      },
+      {
+        "id": "registration",
+        "status": "unknown"
+      },
+      {
+        "id": "authorization-head",
+        "status": "unknown"
+      },
+      {
+        "id": "head",
+        "status": "unknown"
+      }
+    ],
+    "registryEvidence": {
+      "fromBlock": "11353452",
+      "expectedCodeHash": "0xcf6373071bf2a31293ce508c6b711c1886b6019cf963acf7919fbaefde8bd5db",
+      "actualCodeHash": "0xcf6373071bf2a31293ce508c6b711c1886b6019cf963acf7919fbaefde8bd5db",
+      "source": "https://sepolia.etherscan.io/address/0xDdf21937ba80b5fF973610877A0955b320C91241#code"
+    }
+  },
+  "actualRpcRequestCount": 16,
+  "rpcMethodCounts": {
+    "eth_chainId": 1,
+    "eth_getBlockByNumber": 2,
+    "eth_getCode": 1,
+    "eth_call": 2,
+    "eth_getLogs": 10
+  },
+  "requests": [
+    {
+      "sequence": 1,
+      "rpcId": 1,
+      "method": "eth_chainId",
+      "params": [],
+      "startedAt": "2026-10-02T17:34:21.192Z",
+      "requestBodySha256": "09fabe0af56b7726f1666ddd147482df4d951f86f66124b936716c53ab0e8471",
+      "httpStatus": 200,
+      "responseBodySha256": "e45416df4ab7338a4d3bb6bb75e584a2e7898a60a011e0bd4e8e21a4266f71dd",
+      "responseBytes": 45,
+      "completedAt": "2026-10-02T17:34:21.537Z"
+    },
+    {
+      "sequence": 2,
+      "rpcId": 2,
+      "method": "eth_getBlockByNumber",
+      "params": [
+        "finalized",
+        false
+      ],
+      "startedAt": "2026-10-02T17:34:21.537Z",
+      "requestBodySha256": "6039bf93387ca2d21d2ed67eea645150734268ec20f8a8650057ffdd7e841be1",
+      "httpStatus": 200,
+      "responseBodySha256": "092db60a9cb35a7057e38e152c59db78a75e9b42ce948d9be907443e8271778e",
+      "responseBytes": 15668,
+      "returnedBlock": {
+        "number": "0xb48495",
+        "hash": "0xa241734919d8e192fdbab15f92702b113d92da48bd78c91b88c006715642fb45",
+        "timestamp": "0x6abfe760"
+      },
+      "completedAt": "2026-10-02T17:34:21.841Z"
+    },
+    {
+      "sequence": 3,
+      "rpcId": 3,
+      "method": "eth_getCode",
+      "params": [
+        "0xDdf21937ba80b5fF973610877A0955b320C91241",
+        {
+          "blockHash": "0xa241734919d8e192fdbab15f92702b113d92da48bd78c91b88c006715642fb45",
+          "requireCanonical": true
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:21.841Z",
+      "requestBodySha256": "5d88637ae9fa73620e405c3fd574ca12cd80512e4aac6264d0e7c7211a9e8d2a",
+      "httpStatus": 200,
+      "responseBodySha256": "ebbf81895495fae63ab4b2df7375d0f8952aec3d773d3d92363196ee3d061b0f",
+      "responseBytes": 12070,
+      "completedAt": "2026-10-02T17:34:22.077Z"
+    },
+    {
+      "sequence": 4,
+      "rpcId": 4,
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "data": "0xf339e3b2fbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+        },
+        {
+          "blockHash": "0xa241734919d8e192fdbab15f92702b113d92da48bd78c91b88c006715642fb45",
+          "requireCanonical": true
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:22.086Z",
+      "requestBodySha256": "452db67fa1d9fb1990932caa4f3c963699028583d5d95067ff7fd24af1a17231",
+      "httpStatus": 200,
+      "responseBodySha256": "fb25fb1603d4955870669aa9e299c359baa46dccd92444ec52b7a66ae3481374",
+      "responseBytes": 231,
+      "completedAt": "2026-10-02T17:34:22.316Z"
+    },
+    {
+      "sequence": 5,
+      "rpcId": 5,
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "data": "0x773d8426fbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+        },
+        {
+          "blockHash": "0xa241734919d8e192fdbab15f92702b113d92da48bd78c91b88c006715642fb45",
+          "requireCanonical": true
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:22.318Z",
+      "requestBodySha256": "3ed8df27ba1d12e26a899256114ee2fd666db7079fe7f1480d8f5c4f7cfc1f71",
+      "httpStatus": 200,
+      "responseBodySha256": "79cde75ae636b5ed6b302e8f290cf8fdc0b8c483fc6d8204b0e5a0bc6ff51f29",
+      "responseBytes": 231,
+      "completedAt": "2026-10-02T17:34:22.554Z"
+    },
+    {
+      "sequence": 6,
+      "rpcId": 6,
+      "method": "eth_getLogs",
+      "params": [
+        {
+          "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "fromBlock": "0xad3d6c",
+          "toBlock": "0xae00bb",
+          "topics": [
+            [
+              "0x6df36ede39d4df78a9811841eb2a2ac87e1f73abbeb13380559c2f882a3def3b",
+              "0x6a62e0e58c69c9f2d9ee2165b3926eaded280748b87c441b444989e5f52ec653",
+              "0x7294e8b186c350275762610b0f5718be9f4af95f7a7f8f8892381142f2afdde3"
+            ],
+            "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+          ]
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:22.556Z",
+      "requestBodySha256": "d2a559a19285fcf669b0dbde13f3ba61c460d4668f28ffd4bc5e4077b2ee2394",
+      "httpStatus": 200,
+      "responseBodySha256": "fb7378fda12f4368a6f1f7c2d9bd8727c24c8c1b90f9c4a5e12592630d900802",
+      "responseBytes": 36,
+      "logCount": 0,
+      "completedAt": "2026-10-02T17:34:22.800Z"
+    },
+    {
+      "sequence": 7,
+      "rpcId": 7,
+      "method": "eth_getLogs",
+      "params": [
+        {
+          "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "fromBlock": "0xae00bc",
+          "toBlock": "0xaec40b",
+          "topics": [
+            [
+              "0x6df36ede39d4df78a9811841eb2a2ac87e1f73abbeb13380559c2f882a3def3b",
+              "0x6a62e0e58c69c9f2d9ee2165b3926eaded280748b87c441b444989e5f52ec653",
+              "0x7294e8b186c350275762610b0f5718be9f4af95f7a7f8f8892381142f2afdde3"
+            ],
+            "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+          ]
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:22.800Z",
+      "requestBodySha256": "c664eb1400d46d5063196fa1668c7ce98113648274979b6012c437879e141458",
+      "httpStatus": 200,
+      "responseBodySha256": "0b9d9c50cb70e8931b88d8755316f9318b257727dfc08b0b9a2b6468334ee0ad",
+      "responseBytes": 36,
+      "logCount": 0,
+      "completedAt": "2026-10-02T17:34:23.122Z"
+    },
+    {
+      "sequence": 8,
+      "rpcId": 8,
+      "method": "eth_getLogs",
+      "params": [
+        {
+          "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "fromBlock": "0xaec40c",
+          "toBlock": "0xaf875b",
+          "topics": [
+            [
+              "0x6df36ede39d4df78a9811841eb2a2ac87e1f73abbeb13380559c2f882a3def3b",
+              "0x6a62e0e58c69c9f2d9ee2165b3926eaded280748b87c441b444989e5f52ec653",
+              "0x7294e8b186c350275762610b0f5718be9f4af95f7a7f8f8892381142f2afdde3"
+            ],
+            "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+          ]
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:23.123Z",
+      "requestBodySha256": "87e9de6254c80b42273ca04e04735c3ffad4a28a67abdcc68935a9c9f43cb9ba",
+      "httpStatus": 200,
+      "responseBodySha256": "1e3021d0b46337cb675ba8197bcfe23f7cb2abc51f2ff6c636714c28ea876e1c",
+      "responseBytes": 36,
+      "logCount": 0,
+      "completedAt": "2026-10-02T17:34:23.370Z"
+    },
+    {
+      "sequence": 9,
+      "rpcId": 9,
+      "method": "eth_getLogs",
+      "params": [
+        {
+          "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "fromBlock": "0xaf875c",
+          "toBlock": "0xb04aab",
+          "topics": [
+            [
+              "0x6df36ede39d4df78a9811841eb2a2ac87e1f73abbeb13380559c2f882a3def3b",
+              "0x6a62e0e58c69c9f2d9ee2165b3926eaded280748b87c441b444989e5f52ec653",
+              "0x7294e8b186c350275762610b0f5718be9f4af95f7a7f8f8892381142f2afdde3"
+            ],
+            "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+          ]
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:23.370Z",
+      "requestBodySha256": "991c318322daa14e0984a7ca19922831bdedc1656c75943efdb6f3f3aa98bd4f",
+      "httpStatus": 200,
+      "responseBodySha256": "5cecd4d750e264e327854cea1cc854fb7436e88852406ea616317e79c70171aa",
+      "responseBytes": 36,
+      "logCount": 0,
+      "completedAt": "2026-10-02T17:34:23.625Z"
+    },
+    {
+      "sequence": 10,
+      "rpcId": 10,
+      "method": "eth_getLogs",
+      "params": [
+        {
+          "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "fromBlock": "0xb04aac",
+          "toBlock": "0xb10dfb",
+          "topics": [
+            [
+              "0x6df36ede39d4df78a9811841eb2a2ac87e1f73abbeb13380559c2f882a3def3b",
+              "0x6a62e0e58c69c9f2d9ee2165b3926eaded280748b87c441b444989e5f52ec653",
+              "0x7294e8b186c350275762610b0f5718be9f4af95f7a7f8f8892381142f2afdde3"
+            ],
+            "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+          ]
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:23.625Z",
+      "requestBodySha256": "f22618e39fad8407c64ed9c44df3462e57bb2d6770f398a6967d9978edbc0efb",
+      "httpStatus": 200,
+      "responseBodySha256": "a0dd51c1a6c2c93f36b2f4a24e0ef8988d61530e1cfe0c45cc5e1529d0507b79",
+      "responseBytes": 37,
+      "logCount": 0,
+      "completedAt": "2026-10-02T17:34:23.892Z"
+    },
+    {
+      "sequence": 11,
+      "rpcId": 11,
+      "method": "eth_getLogs",
+      "params": [
+        {
+          "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "fromBlock": "0xb10dfc",
+          "toBlock": "0xb1d14b",
+          "topics": [
+            [
+              "0x6df36ede39d4df78a9811841eb2a2ac87e1f73abbeb13380559c2f882a3def3b",
+              "0x6a62e0e58c69c9f2d9ee2165b3926eaded280748b87c441b444989e5f52ec653",
+              "0x7294e8b186c350275762610b0f5718be9f4af95f7a7f8f8892381142f2afdde3"
+            ],
+            "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+          ]
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:23.892Z",
+      "requestBodySha256": "73cc60e82c3d89d0d5294b450efd4c573697412512be7519dca4d4eb19380e1c",
+      "httpStatus": 200,
+      "responseBodySha256": "2c8d689e37498970918392ae8f68252b1c3f0f3738d79f337f604259c19bc02d",
+      "responseBytes": 37,
+      "logCount": 0,
+      "completedAt": "2026-10-02T17:34:24.146Z"
+    },
+    {
+      "sequence": 12,
+      "rpcId": 12,
+      "method": "eth_getLogs",
+      "params": [
+        {
+          "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "fromBlock": "0xb1d14c",
+          "toBlock": "0xb2949b",
+          "topics": [
+            [
+              "0x6df36ede39d4df78a9811841eb2a2ac87e1f73abbeb13380559c2f882a3def3b",
+              "0x6a62e0e58c69c9f2d9ee2165b3926eaded280748b87c441b444989e5f52ec653",
+              "0x7294e8b186c350275762610b0f5718be9f4af95f7a7f8f8892381142f2afdde3"
+            ],
+            "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+          ]
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:24.146Z",
+      "requestBodySha256": "9a5fe3a2c649319e774cf3857499e8f6299316faf49fdb7e377ebcc4e18f65b6",
+      "httpStatus": 200,
+      "responseBodySha256": "d24a747e6dac2611667aef9d26a42b7c3c2ed8d9ea5ed24a4cb4e524c046e0c0",
+      "responseBytes": 37,
+      "logCount": 0,
+      "completedAt": "2026-10-02T17:34:24.407Z"
+    },
+    {
+      "sequence": 13,
+      "rpcId": 13,
+      "method": "eth_getLogs",
+      "params": [
+        {
+          "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "fromBlock": "0xb2949c",
+          "toBlock": "0xb357eb",
+          "topics": [
+            [
+              "0x6df36ede39d4df78a9811841eb2a2ac87e1f73abbeb13380559c2f882a3def3b",
+              "0x6a62e0e58c69c9f2d9ee2165b3926eaded280748b87c441b444989e5f52ec653",
+              "0x7294e8b186c350275762610b0f5718be9f4af95f7a7f8f8892381142f2afdde3"
+            ],
+            "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+          ]
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:24.407Z",
+      "requestBodySha256": "52db54856f1ad6637a91ba250a5ba457285a61c02a00103d9764fc8ba66252e3",
+      "httpStatus": 200,
+      "responseBodySha256": "9fb656249eab1124ef749a6de9beddac6b01f13a8ed32c754a49e87cf414cd43",
+      "responseBytes": 37,
+      "logCount": 0,
+      "completedAt": "2026-10-02T17:34:24.668Z"
+    },
+    {
+      "sequence": 14,
+      "rpcId": 14,
+      "method": "eth_getLogs",
+      "params": [
+        {
+          "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "fromBlock": "0xb357ec",
+          "toBlock": "0xb41b3b",
+          "topics": [
+            [
+              "0x6df36ede39d4df78a9811841eb2a2ac87e1f73abbeb13380559c2f882a3def3b",
+              "0x6a62e0e58c69c9f2d9ee2165b3926eaded280748b87c441b444989e5f52ec653",
+              "0x7294e8b186c350275762610b0f5718be9f4af95f7a7f8f8892381142f2afdde3"
+            ],
+            "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+          ]
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:24.668Z",
+      "requestBodySha256": "80b6b5ada6319c4053fd00f2ad1bad0c33d9144427b589c0ac3ea94dfeb6d10b",
+      "httpStatus": 200,
+      "responseBodySha256": "8b02809ebabb14b37850ea22c3e18c94fcb27c7965be9fe33ebd3c28406b5b52",
+      "responseBytes": 37,
+      "logCount": 0,
+      "completedAt": "2026-10-02T17:34:24.931Z"
+    },
+    {
+      "sequence": 15,
+      "rpcId": 15,
+      "method": "eth_getLogs",
+      "params": [
+        {
+          "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+          "fromBlock": "0xb41b3c",
+          "toBlock": "0xb48495",
+          "topics": [
+            [
+              "0x6df36ede39d4df78a9811841eb2a2ac87e1f73abbeb13380559c2f882a3def3b",
+              "0x6a62e0e58c69c9f2d9ee2165b3926eaded280748b87c441b444989e5f52ec653",
+              "0x7294e8b186c350275762610b0f5718be9f4af95f7a7f8f8892381142f2afdde3"
+            ],
+            "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+          ]
+        }
+      ],
+      "startedAt": "2026-10-02T17:34:24.931Z",
+      "requestBodySha256": "2ec825c7c652c0e48f80c2f657f6cbf6f7b90278719e0976655e3ae8684d6ab7",
+      "httpStatus": 200,
+      "responseBodySha256": "181ebfc4941d7b8fab3f4f6bddfe9b5290e7a4e443c4716d80436ed32f2a0797",
+      "responseBytes": 37,
+      "logCount": 0,
+      "completedAt": "2026-10-02T17:34:25.251Z"
+    },
+    {
+      "sequence": 16,
+      "rpcId": 16,
+      "method": "eth_getBlockByNumber",
+      "params": [
+        "0xb48495",
+        false
+      ],
+      "startedAt": "2026-10-02T17:34:25.251Z",
+      "requestBodySha256": "00917fc0d0ed7c5cb74e86d67d50311a4628005155d1d37d195590331476a451",
+      "httpStatus": 200,
+      "responseBodySha256": "7c1e5d3002065d54c8c6f1a5bd193d67731bd396a8e1a71767c864f57af20fd0",
+      "responseBytes": 15669,
+      "returnedBlock": {
+        "number": "0xb48495",
+        "hash": "0xa241734919d8e192fdbab15f92702b113d92da48bd78c91b88c006715642fb45",
+        "timestamp": "0x6abfe760"
+      },
+      "completedAt": "2026-10-02T17:34:25.495Z"
+    }
+  ],
+  "limitations": [
+    "This capture was produced by the read-only audit CLI, not through the paid HTTP endpoint.",
+    "No wallet connection, signing, payment, settlement, GitHub identity attestation, or bounty acceptance is evidenced by these files.",
+    "One public RPC supplies the block, bytecode, calls and logs; hashes and state continuity are consistency checks, not independent cryptographic proof that this RPC is truthful.",
+    "RPC finalized means the finalized block returned by this RPC during this observation. Block timestamps describe chain data and are not substituted for the actual client capture time.",
+    "The request contains no user checkpoint; this report checks the observed registry history and head.",
+    "ERC-8350 commitment consistency does not prove memory contents are true, available or used by an agent.",
+    "Raw response bodies are not retained in this capture; recorded response digests identify the bytes received but cannot reconstruct them.",
+    "This fresh observation contains no event logs. It cannot establish the five-transition history even though the pinned head reports sequence 5; an independent offline verifier should preserve the inconclusive verdict."
+  ],
+  "completionStatus": "report_generated_inconclusive",
+  "reportIsConsistent": false,
+  "observedOutcome": "The read-only RPC collection produced a new report. All 10 eth_getLogs pages returned empty arrays while the pinned registry head reported sequence 5, so the auditor correctly reported missing registration and transition evidence as inconclusive. The CLI exit code 2 reflects that verdict, not a fabricated success."
+}

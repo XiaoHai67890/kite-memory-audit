@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1",
+  "validatedAt": "2026-10-02T17:46:57.609Z",
+  "statisticalWeek": {
+    "number": 3,
+    "from": "2026-09-28",
+    "to": "2026-10-04",
+    "timezone": "Asia/Shanghai"
+  },
+  "validation": {
+    "typecheck": "passed",
+    "build": "passed",
+    "tests": 186,
+    "passed": 186,
+    "failed": 0,
+    "skipped": 0,
+    "addedSinceWeek2": 46
+  },
+  "offlineExecutions": [
+    {
+      "report": "evidence/live-sepolia-report.json",
+      "note": "Earlier reference snapshot captured 2026-09-23; freshly verified with week3 code.",
+      "output": "evidence/week3-reference-verification.json",
+      "status": "verified",
+      "code": "REPORT_VERIFIED",
+      "exitCode": 0
+    },
+    {
+      "report": "evidence/week3-live-sepolia-report.json",
+      "note": "Fresh read-only capture has missing event logs; honest incompleteness is retained.",
+      "output": "evidence/week3-offline-verification.json",
+      "status": "unknown",
+      "code": "EVIDENCE_INCOMPLETE",
+      "exitCode": 2
+    }
+  ],
+  "sourceDigests": [
+    {
+      "path": "src/report-verifier.ts",
+      "sha256": "f2582f1e471df08054bd3de3e6fe7384b2419cb1f061cd3a8466d6def7a1df82"
+    },
+    {
+      "path": "src/report-files.ts",
+      "sha256": "11c693325c88cd775d55fbf2fe3a5cacff4ede19d5b5c0616e0afe2df301ac78"
+    },
+    {
+      "path": "src/paid-client.ts",
+      "sha256": "ef4f281a5d14864cf6c4385cf1e7940055cb33c8eb98c2c3db6dfade2bfa584e"
+    },
+    {
+      "path": "scripts/report-verify.ts",
+      "sha256": "0b7eef7612df11f0a13acf56ac758a8da757f537a8fb7c831981adcce50e183e"
+    },
+    {
+      "path": "scripts/payment-client.ts",
+      "sha256": "7b44a41360c7333629453c09b1ad15258ca0827e742daa9c96d4e3d69b46b05b"
+    },
+    {
+      "path": "test/report-verifier.test.ts",
+      "sha256": "3ce734e65cf1285c54e7559866349f4727b3949c343d8385bf512a8194f0678a"
+    },
+    {
+      "path": "test/report-files.test.ts",
+      "sha256": "30e50ef4295c993079cb9ddc8a0190fcfe8c064205527d5726ae48ca0c246112"
+    },
+    {
+      "path": "test/report-cli.test.ts",
+      "sha256": "cbc3afe5e505f6013a02fab79b1f73c027e9b2da1ca9770de79ad291706b408c"
+    },
+    {
+      "path": "test/paid-client.test.ts",
+      "sha256": "4599677f379138e4329af2852da790eb8cbca420018f673f91dc196773d5def2"
+    }
+  ],
+  "limitations": [
+    "Automated payment tests use simulated transport and a publicly known test key; they are not real payment evidence.",
+    "The offline verifier uses the same audit engine and verifies internal consistency, not chain authenticity or independent consensus.",
+    "No public deployment or real participant paid call was completed."
+  ]
+}
