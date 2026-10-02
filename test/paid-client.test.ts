@@ -296,3 +296,107 @@ test('oversized declared or streamed response remains unknown and never causes a
     assert.equal(f.state.calls.length, 2); assert.equal(f.state.signCount, 1);
   }
 });
+
+test('captures exact complete report and original request before settlement RPC without signing data', async () => {
+  const f = fixture();
+  const reportText = JSON.stringify(f.report, null, 2) + '\n';
+  f.state.responseText = reportText;
+  let capture: unknown;
+  f.options.captureReport = async value => {
+    f.state.events.push('capture'); capture = structuredClone(value);
+    value.request.chainId = 1; // External persistence cannot mutate the actual request.
+  };
+  const result = await executePaidAudit(f.options);
+  assert.equal(result.status, 'verified');
+  assert.deepEqual(capture, { request: f.request, reportText, reportSha256: sha256(reportText),
+    requestSha256: sha256(JSON.stringify(f.request)), resourceUrl: RESOURCE_URL });
+  assert.deepEqual(result.reportCapture, { status: 'saved', sha256: sha256(reportText) });
+  assert(f.state.events.indexOf('capture') < f.state.events.indexOf('eth_chainId'));
+  const signature = (f.state.signed!.payload as unknown as SignedPayload).signature;
+  assert(!JSON.stringify(capture).includes(signature));
+  assert(!JSON.stringify(result).includes('reportText'));
+  assert.equal(f.state.calls.length, 2);
+});
+
+test('keeps a delivered report even when settlement header is missing or independent receipt is uncertain', async () => {
+  for (const mode of ['missing-header', 'unknown-receipt'] as const) {
+    const f = fixture(); let captures = 0;
+    if (mode === 'missing-header') f.state.receiptHeader = false;
+    else f.options.rpc = async () => null;
+    f.options.captureReport = async () => { captures++; };
+    const result = await executePaidAudit(f.options);
+    assert.equal(result.status, 'unknown'); assert.equal(captures, 1);
+    assert.equal(result.reportCapture?.status, 'saved');
+    assert.equal(f.state.calls.length, 2); assert.equal(f.state.signCount, 1);
+  }
+});
+
+test('local capture failure preserves original settlement evidence and never repeats payment', async () => {
+  const f = fixture(); let captures = 0;
+  f.options.captureReport = async () => { captures++; throw new Error('private-path-secret'); };
+  const result = await executePaidAudit(f.options);
+  assert.equal(result.status, 'unknown'); assert.equal(result.code, 'report_capture_failed');
+  assert.equal(result.reportCapture?.status, 'failed'); assert.equal(result.receipt?.status, 'verified');
+  assert.equal(result.expectation?.transaction, TX); assert.equal(captures, 1);
+  assert.equal(f.state.calls.length, 2); assert.equal(f.state.signCount, 1);
+  assert(!JSON.stringify(result).includes('private-path-secret'));
+});
+
+test('capture refuses malformed, mismatched, partial or extended full reports and non-200 responses', async () => {
+  for (const mode of ['subject', 'evidence-subject', 'partial', 'extension', 'non-200', 'invalid-json'] as const) {
+    const f = fixture(); let captures = 0;
+    if (mode === 'subject') f.report.subject.spaceId = h(777);
+    if (mode === 'evidence-subject') f.report.evidence.spaceId = h(777);
+    if (mode === 'partial') delete f.report.evidence.events;
+    if (mode === 'extension') f.report.paymentSignature = 'private-secret';
+    if (mode === 'non-200') f.state.paidStatus = 503;
+    if (mode === 'invalid-json') f.state.responseText = 'private-invalid-json';
+    f.options.captureReport = async () => { captures++; };
+    const result = await executePaidAudit(f.options);
+    assert.equal(result.status, 'unknown', mode); assert.equal(captures, 0, mode);
+    assert.equal(f.state.calls.length, 2); assert(!JSON.stringify(result).includes('private-secret'));
+  }
+});
+
+test('capture rejects signed authorization echoes in allowed prose and BOM bytes without losing settlement or retrying', async () => {
+  for (const mode of ['message', 'limitations', 'source', 'rpcLabel', 'header', 'unicode-escaped', 'bom'] as const) {
+    const f = fixture(); let captures = 0;
+    let signature = '', paymentHeader = '';
+    f.options.captureReport = async () => { captures++; };
+    const originalFetch = f.options.fetcher!;
+    f.options.fetcher = async (url, init) => {
+      const header = new Headers(init.headers).get('PAYMENT-SIGNATURE');
+      if (header) {
+        paymentHeader = header;
+        const payment = JSON.parse(Buffer.from(header, 'base64').toString('utf8')) as PaymentPayload;
+        signature = (payment.payload as unknown as SignedPayload).signature;
+        if (mode === 'message') f.report.checks[0].message = `Echo: ${signature.toUpperCase()}`;
+        if (mode === 'limitations') f.report.limitations = [`Echo: ${signature}`];
+        if (mode === 'source') f.report.evidence.registryEvidence.source = signature;
+        if (mode === 'rpcLabel') f.report.evidence.rpcLabel = signature;
+        if (mode === 'header') {
+          assert(header.length <= 2_048, 'Echo must fit the normal message bound to exercise the echo guard');
+          f.report.checks[0].message = header;
+        }
+        if (mode === 'unicode-escaped') {
+          f.report.checks[0].message = signature;
+          const escaped = [...signature].map(character => `\\u${character.charCodeAt(0).toString(16).padStart(4, '0')}`).join('');
+          f.state.responseText = JSON.stringify(f.report).replace(signature, escaped);
+        }
+        if (mode === 'bom') f.state.responseText = '\ufeff' + JSON.stringify(f.report);
+      }
+      return originalFetch(url, init);
+    };
+    const result = await executePaidAudit(f.options);
+    assert.equal(result.status, 'unknown', mode);
+    assert.equal(captures, 0, mode);
+    assert.equal(result.reportCapture?.status, 'failed', mode);
+    assert.equal(result.receipt?.status, 'verified', mode);
+    assert.equal(result.expectation?.transaction, TX, mode);
+    assert.equal(f.state.calls.length, 2, mode);
+    assert.equal(f.state.signCount, 1, mode);
+    assert(!JSON.stringify(result).toLowerCase().includes(signature.toLowerCase()), mode);
+    assert(!JSON.stringify(result).includes(paymentHeader), mode);
+    if (mode === 'bom') assert.equal(result.reportCapture?.sha256, sha256(f.state.responseText!));
+  }
+});
