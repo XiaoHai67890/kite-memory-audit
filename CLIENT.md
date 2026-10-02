@@ -54,6 +54,12 @@ npm run payment:client -- execute config/client.local.json examples/request.json
 授权文件敏感，应保存在被 Git 忽略的 `evidence/*.local.json` 中，不提交或公开。
 配置也使用 `config/*.local.json`，避免泄漏 RPC 凭据。
 
+第三周增加自动保存完整报告：`execute` 在付款前预留 `OUTPUT.report/` 私密目录，
+完整匹配的 HTTP 200 报告收到后保存 `request.json`、精确正文 `report.json` 和摘要清单，
+再核验付款回执。执行结束后保存付款结果白名单摘要；目录已存在或预留失败时不会发送付款。
+报告保存失败时仍调查原交易，不自动重付。目录已被 Git 忽略，分享前需检查内容。
+完整报告离线复核、目录状态及限制见 [REPORTS.md](./REPORTS.md)。
+
 付款前，CLI 用网络、付款人和 nonce 原子创建持久记录。更换输出文件名不会绕过同一目录内的重复检查。
 保留 `.payment-attempts`，不要删除记录、换目录或换新 nonce 来重试未知付款。
 它防止同一授权重复发送，**不承诺跨机器或新授权的业务幂等性**。
@@ -101,9 +107,11 @@ CLI 的实现见 [scripts/payment-client.ts](./scripts/payment-client.ts)。
 - `unknown`：可能已付款，但响应、确认数、回执或报告不足。继续调查原交易，不自动重付。
 - `rejected`：本次执行在发送付款请求前被拒绝；同一授权的历史尝试仍需单独核对。
 
-执行证据保存报告摘要、判定及公开付款信息，不保存原始报告正文、付款签名或全部响应头。
+执行结果 JSON 保存报告摘要、判定及公开付款信息，不保存付款签名或全部响应头。
+CLI 另将完整报告保存到私密 `OUTPUT.report/` 目录；库调用方可提供 `captureReport` 回调。
 客户端核对的是报告的 subject、指定 block 和 checkpoint 状态/序号声明，没有重新证明记忆内容真实，
-也没有独立重放报告里的全部证据。请求 SHA-256 是本地关联记录，EIP-3009 并未把 HTTP 请求体提交到链上。
+执行命令的判定也没有重放报告里的全部证据；第三周新增的 `report:verify` 命令另行完成离线重放。
+请求 SHA-256 是本地关联记录，EIP-3009 并未把 HTTP 请求体提交到链上。
 
 独立配置 RPC 有助于分离商户与核验来源，但仍然信任该 RPC；2 个确认不是共识、最终性或收据包含证明。
 服务端在结算前限制完整报告为 4,000,000 字节，超限返回 422；客户端同样限制响应大小。

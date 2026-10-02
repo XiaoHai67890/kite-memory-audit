@@ -25,15 +25,28 @@ These tests are not real payment evidence. Deployment and real participant
 payment remain incomplete and must not be claimed as completed direction-01
 acceptance. Submit only this round's new public commits as weekly code progress.
 
-## Evidence to complete before submitting
+## Third contribution: complete report capture and offline verification (2026-10-03)
+
+Third contribution (week 3): complete-report capture, private evidence bundles,
+strict offline replay against the original request and an independent registry
+policy, and adversarial report/CLI/file tests. New live read-only Sepolia evidence
+is honestly inconclusive (missing logs); its offline verification must stay
+unknown. These records are separate from paid service delivery. See REPORTS.md.
+Local type checking, build and the complete automated suite pass. Actual validation
+counts and reproducible offline outcomes are recorded in
+`evidence/week3-validation.json`. The earlier complete reference report verifies;
+the newly captured report stays unknown. Tests use offline simulated payments,
+not real participant-paid-call evidence. Submit only this week's new public commits.
+
+## Remaining service acceptance work
 
 - [x] Activity dashboard confirms a verified wallet and bound GitHub account `XiaoHai67890`.
 - [x] Commit the first implementation using the contributor's own Git
       name/email and GitHub identity, inside the activity's current statistical week.
 - [x] Publish the first source repository (XiaoHai67890/kite-memory-audit).
 - [ ] Deploy to a public HTTPS origin and configure the actual receiving address.
-- [x] Run `npm run check` and `npm run build`; first publication CI passed.
-      Record a new successful CI URL for the second contribution after publication.
+- [x] Run `npm run check` and `npm run build`; record the final new publication CI
+      in the weekly submission.
 - [ ] Generate and validate the service manifest with actual maintainer/address.
 - [ ] Capture an unpaid request returning 402, including decoded PAYMENT-REQUIRED.
 - [ ] Resolve the current Passport/Kite payment-network compatibility prerequisite
@@ -45,8 +58,9 @@ acceptance. Submit only this round's new public commits as weekly code progress.
 - [ ] Set `status: testnet` only for deployed/tested pieUSD service; `live` requires
       deployed/tested Kite mainnet USDC.e. Confirm the bounty accepts the chosen network.
 - [ ] Include deployment URL, manifest, report, tests and real payment evidence.
-- [ ] Complete any required Electric Capital registration; do not claim it is merged
-      or rewards are available without checking the activity dashboard.
+- [x] Electric Capital repository registration PR #3035 was merged. This registers
+      the repository relationship; it does not establish weekly bounty approval
+      or reward eligibility.
 
 Automated mocked facilitator tests and read-only RPC reports do **not** satisfy the
 real participant-paid-call item. A locally created Git repository without a commit

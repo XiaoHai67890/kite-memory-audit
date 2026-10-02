@@ -15,7 +15,8 @@
     "check": "npm run typecheck && npm test",
     "audit:live": "tsx scripts/audit-live.ts",
     "manifest": "tsx scripts/manifest.ts",
-    "payment:client": "tsx scripts/payment-client.ts"
+    "payment:client": "tsx scripts/payment-client.ts",
+    "report:verify": "tsx scripts/report-verify.ts"
   },
   "dependencies": {
     "@x402/core": "2.25.0",

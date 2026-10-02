@@ -5,12 +5,14 @@ compares an optional checkpoint, and returns a reproducible evidence report.
 The service implements Kite x402 payment per completed report. Current Passport
 payer compatibility requires confirmation; see [the paid-call handoff](./PAID_CALL.md).
 
-[中文快速开始](./START_HERE.zh-CN.md) · [支付验收客户端](./CLIENT.md) · [API definition](./openapi.yaml) · [Submission checklist](./SUBMISSION.md)
+[中文快速开始](./START_HERE.zh-CN.md) · [支付验收客户端](./CLIENT.md) · [完整报告复核](./REPORTS.md) · [API definition](./openapi.yaml) · [Submission checklist](./SUBMISSION.md)
 
 **Status: implementation and tests, with a real, read-only Sepolia report.**
 The second-week client work adds strict quote validation, one-shot EOA payment
 execution, a persistent nonce journal, and read-only receipt verification.
-This week's work has not been newly deployed or paid on-chain. Automated payment
+The third-week work preserves complete reports in private evidence bundles and
+replays them offline against an independent registry policy and original request.
+This work has not been deployed publicly or paid on-chain. Automated payment
 tests are not real payment evidence. Passport compatibility and bounty acceptance
 remain unconfirmed; see [CLIENT.md](./CLIENT.md).
 
@@ -65,6 +67,17 @@ curl -sS http://127.0.0.1:8080/v1/memory/audit \
 local-unpaid`. The CLI and local HTTP reports are **not payment evidence**.
 
 ## Paid service
+
+Offline report verification, without RPC or a wallet:
+
+```sh
+npm run report:verify -- config/report-policy.example.json examples/request.json evidence/live-sepolia-report.json evidence/my-verification.local.json
+```
+
+This compares supplied evidence and report declarations, not independent chain
+truth. A correctly reported inconsistent history can pass report verification.
+See [REPORTS.md](./REPORTS.md) for policy, evidence bundles, digest checks and the
+new, honestly inconclusive live-RPC example.
 
 Read [PAID_CALL.md](./PAID_CALL.md) before testing with Passport: current official
 Passport network guidance conflicts with the older Kite sandbox walkthrough.
