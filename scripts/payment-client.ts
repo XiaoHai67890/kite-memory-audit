@@ -1,4 +1,4 @@
-import { open, readFile, stat, writeFile } from 'node:fs/promises';
+import { open, stat, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { z } from 'zod';
 import { executePaidAudit, preflightAudit, type Attempt } from '../src/paid-client.js';
@@ -6,6 +6,7 @@ import { claimPaymentAttempt } from '../src/payment-journal.js';
 import { validatePaymentPolicy } from '../src/payment-quote.js';
 import { createReceiptRpc, verifyPaymentReceipt, type ReceiptExpectation } from '../src/payment-receipt.js';
 import { addressSchema } from '../src/validation.js';
+import { reserveReportDirectory, saveReportCapture, finalizeReportCapture } from '../src/report-files.js';
 
 // Signed authorizations must be obtained from a compatible wallet/client under
 // the participant's control. This CLI never asks for or imports a private key.
@@ -57,12 +58,20 @@ async function main(): Promise<void> {
     // failure still leaves a durable nonce claim and a visible pending record.
     await writeFile(output, JSON.stringify({ status: 'pending', message: 'Inspect the local attempt journal; do not repeat payment.' }) + '\n', { flag: 'wx', mode: 0o600 });
     try {
+      const reportDirectory = `${output}.report`;
+      // Reserve private storage before any paid request. An existing bundle
+      // prevents this run from proceeding; it is never overwritten.
+      await reserveReportDirectory(reportDirectory);
       result = await executePaidAudit({
         policy, request: await jsonFile(requestPath), payer: config.payer,
         rpc: createReceiptRpc(config.receiptRpcUrl), sign: async () => signed,
         beforeSend: attempt => claimPaymentAttempt(journal, attempt),
+        captureReport: capture => saveReportCapture(reportDirectory, capture),
       });
       await writeFile(output, JSON.stringify(result, null, 2) + '\n', { mode: 0o600 });
+      // Preserve the transaction expectation in the main output even if the
+      // secondary bundle summary cannot be saved. Never repeat payment.
+      await finalizeReportCapture(reportDirectory, result);
       if ((result as { status: string }).status !== 'verified') process.exitCode = 2;
       console.log(`Saved payment evidence. Outcome: ${(result as { status: string }).status}.`);
       return;
