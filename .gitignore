@@ -10,3 +10,4 @@ service.json
 .DS_Store
 .vercel/
 .payment-attempts/
+*.report/
