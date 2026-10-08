@@ -51,7 +51,7 @@ function index(value: unknown): number {
 function same(a: string, b: string): boolean { return a.toLowerCase() === b.toLowerCase(); }
 
 // Only this locally configured URL can reach the network; AuditRequest has no URL field.
-function httpTransport(url: string, maxResponseBytes: number): RpcTransport {
+export function createRpcTransport(url: string, maxResponseBytes: number): RpcTransport {
   let id = 0;
   return async (method, params, signal) => {
     const requestId = ++id;
@@ -150,7 +150,7 @@ export async function collectEvidence(request: AuditRequest, registry: RegistryC
   if (request.atBlock !== undefined && !/^(0|[1-9][0-9]*)$/.test(request.atBlock)) {
     throw new ServiceError('INVALID_BLOCK', 'atBlock must be a nonnegative decimal block number.', 400);
   }
-  const transport = options.transport ?? httpTransport(registry.rpcUrl, limits.maxResponseBytes);
+  const transport = options.transport ?? createRpcTransport(registry.rpcUrl, limits.maxResponseBytes);
   const startedAt = Date.now();
   let requests = 0;
   async function rpc(method: string, params: readonly unknown[]): Promise<unknown> {
