@@ -16,7 +16,8 @@
     "audit:live": "tsx scripts/audit-live.ts",
     "manifest": "tsx scripts/manifest.ts",
     "payment:client": "tsx scripts/payment-client.ts",
-    "report:verify": "tsx scripts/report-verify.ts"
+    "report:verify": "tsx scripts/report-verify.ts",
+    "rpc:diagnose": "tsx scripts/rpc-diagnose.ts"
   },
   "dependencies": {
     "@x402/core": "2.25.0",

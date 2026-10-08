@@ -38,6 +38,23 @@ counts and reproducible offline outcomes are recorded in
 the newly captured report stays unknown. Tests use offline simulated payments,
 not real participant-paid-call evidence. Submit only this week's new public commits.
 
+## Fourth contribution: fixed-block RPC evidence diagnostics (2026-10-09)
+
+Add a read-only diagnostic CLI that selects a common finalized height for two
+separately configured RPC sources, checks the registry pin, and compares block,
+head, authorization and canonical event evidence. Preserve each source report
+without combining logs or converting matching incomplete evidence into success.
+This supports diagnosis of upstream gaps before operating the Kite x402 service.
+See DIAGNOSTICS.md for configuration, result meanings and privacy limits.
+
+Tests cover source differences, incomplete history, failures, time and query
+budgets, strict local configuration and exclusive private output. All 218 tests,
+type checking and build pass, including 32 tests added since week 3. Actual
+fresh live outcomes and source digests are recorded under `evidence/week4-*`.
+Only new public commits authored during 10/05–10/11 belong in week 4. This code
+progress does not replace the remaining public deployment and participant
+paid-call evidence.
+
 ## Remaining service acceptance work
 
 - [x] Activity dashboard confirms a verified wallet and bound GitHub account `XiaoHai67890`.

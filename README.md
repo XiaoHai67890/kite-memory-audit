@@ -5,13 +5,16 @@ compares an optional checkpoint, and returns a reproducible evidence report.
 The service implements Kite x402 payment per completed report. Current Passport
 payer compatibility requires confirmation; see [the paid-call handoff](./PAID_CALL.md).
 
-[中文快速开始](./START_HERE.zh-CN.md) · [支付验收客户端](./CLIENT.md) · [完整报告复核](./REPORTS.md) · [API definition](./openapi.yaml) · [Submission checklist](./SUBMISSION.md)
+[中文快速开始](./START_HERE.zh-CN.md) · [支付验收客户端](./CLIENT.md) · [完整报告复核](./REPORTS.md) · [双 RPC 诊断](./DIAGNOSTICS.md) · [API definition](./openapi.yaml) · [Submission checklist](./SUBMISSION.md)
 
 **Status: implementation and tests, with a real, read-only Sepolia report.**
 The second-week client work adds strict quote validation, one-shot EOA payment
 execution, a persistent nonce journal, and read-only receipt verification.
 The third-week work preserves complete reports in private evidence bundles and
 replays them offline against an independent registry policy and original request.
+The fourth-week diagnostic compares two separately configured RPC sources at one
+common finalized height, preserves each report, and identifies missing or changed
+event evidence without merging histories or endorsing a winning source.
 This work has not been deployed publicly or paid on-chain. Automated payment
 tests are not real payment evidence. Passport compatibility and bounty acceptance
 remain unconfirmed; see [CLIENT.md](./CLIENT.md).
@@ -65,6 +68,19 @@ curl -sS http://127.0.0.1:8080/v1/memory/audit \
 
 `local` mode refuses non-loopback binding and returns `X-Audit-Payment-Mode:
 local-unpaid`. The CLI and local HTTP reports are **not payment evidence**.
+
+Compare two RPC sources before selecting an upstream for the paid service:
+
+```sh
+SEPOLIA_RPC_PRIMARY=https://ethereum-sepolia-rpc.publicnode.com \
+SEPOLIA_RPC_SECONDARY=https://eth-sepolia-testnet.api.pocket.network \
+  npm run rpc:diagnose -- config/rpc-diagnostics.example.json examples/request.json evidence/my-diagnostic.local.json
+```
+
+An unavailable source or matching incomplete reports cannot produce agreement.
+Agreement describes the two supplied observations, not proof of chain truth or
+the audited history being consistent. See [DIAGNOSTICS.md](./DIAGNOSTICS.md) for
+the distinct outcomes, fixed-block selection, limits and private output.
 
 ## Paid service
 
