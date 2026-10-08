@@ -1,0 +1,215 @@
+{
+  "schemaVersion": "1",
+  "evidenceKind": "read-only-live-two-rpc-diagnostic",
+  "clientWeekLabel": "week4",
+  "clientWeekDate": "2026-10-09",
+  "clientTimezone": "Asia/Shanghai",
+  "startedAt": "2026-10-08T20:41:22.335Z",
+  "finishedAt": "2026-10-08T20:41:26.188Z",
+  "elapsedMs": 3853,
+  "cliExitCode": 2,
+  "cliStdout": "Saved RPC diagnostic. Outcome: unavailable. Agreement compares configured RPC sources; it is not an independent on-chain proof.",
+  "cliStderr": "",
+  "diagnosticGenerated": true,
+  "resultStatus": "unavailable",
+  "resultCode": "SOURCE_UNAVAILABLE",
+  "selectedBlock": {
+    "number": "11872534"
+  },
+  "execution": {
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "scripts/rpc-diagnose.ts",
+      "config/rpc-diagnostics.example.json",
+      "examples/request.json",
+      "evidence/week4-live-diagnostic.json"
+    ],
+    "commandNote": "Reproducible command display; the absolute local interpreter path is intentionally omitted. The actual interpreter version is recorded below.",
+    "npmScriptEquivalent": "npm run rpc:diagnose -- config/rpc-diagnostics.example.json examples/request.json evidence/week4-live-diagnostic.json",
+    "nodeVersion": "v22.23.2",
+    "branch": "week4/rpc-diagnostics",
+    "baseRevision": "543589c0ec6da63ed3f44d985c7579b86d67f0d0",
+    "implementationVersionNote": "This run uses the new, not-yet-committed working-tree implementation. baseRevision is only the Git parent/base at capture time and does not identify these new files. The exact executed source and dependency lock versions are identified by implementationDigests.",
+    "implementationDigests": [
+      {
+        "path": "scripts/rpc-diagnose.ts",
+        "bytes": 4116,
+        "sha256": "04d1a0b505070fb730be09d48fcc700121cea5b2297ca9cf36bfd398c5695d94"
+      },
+      {
+        "path": "src/diagnostic-config.ts",
+        "bytes": 3446,
+        "sha256": "00ac6b51afbc3e36f0a467995333eb0b92416cff04b8b8fb4715bf2c385104a6"
+      },
+      {
+        "path": "src/rpc-diagnostics.ts",
+        "bytes": 15178,
+        "sha256": "8f53c3dd9e9850f36a41d1bc0974f2039a5451bfdbce005f3bf481db12d68ea2"
+      },
+      {
+        "path": "src/rpc.ts",
+        "bytes": 15869,
+        "sha256": "1bc90388d068013a93f2d31c7a51f92fa1a54a33b4703e11cb29da374a5a040d"
+      },
+      {
+        "path": "src/registry-abi.ts",
+        "bytes": 1229,
+        "sha256": "8b1ac01c138ad171f5a5bc9c5dd197e3e713eda92c37ac5676c800e72e5058dc"
+      },
+      {
+        "path": "src/audit.ts",
+        "bytes": 15327,
+        "sha256": "ba05131c311477d0e7b56c29c3255aae8fccddce6674812eee09b7bdf214df75"
+      },
+      {
+        "path": "src/erc8350.ts",
+        "bytes": 1468,
+        "sha256": "58852b2f174a7f99eef267ae493bec5495903fc0df57d69a1054b89967a386a0"
+      },
+      {
+        "path": "src/report-verifier.ts",
+        "bytes": 12928,
+        "sha256": "f2582f1e471df08054bd3de3e6fe7384b2419cb1f061cd3a8466d6def7a1df82"
+      },
+      {
+        "path": "src/report-files.ts",
+        "bytes": 10421,
+        "sha256": "11c693325c88cd775d55fbf2fe3a5cacff4ede19d5b5c0616e0afe2df301ac78"
+      },
+      {
+        "path": "src/validation.ts",
+        "bytes": 1417,
+        "sha256": "79038b68d45391c15148bb7537a98f536b301aceb0d82bc556aa31200a98fc1a"
+      },
+      {
+        "path": "src/types.ts",
+        "bytes": 2119,
+        "sha256": "2fe0462f35be62376c234c8baa0812fe49fe747de325751a7dc4a3d97ef0ad50"
+      },
+      {
+        "path": "src/errors.ts",
+        "bytes": 193,
+        "sha256": "65f949ea14d7e74c76c0918c6d2ac836eea0413aed094c6c396f196890bb4d88"
+      },
+      {
+        "path": "package.json",
+        "bytes": 1107,
+        "sha256": "c93f8aa6ad5caffd9c1e88c1293c67e3cccbf1ca7a246ced631c1e79a42659f9"
+      },
+      {
+        "path": "package-lock.json",
+        "bytes": 67229,
+        "sha256": "b8b758fd049ea8b4c5f97eba55f98bb809714505825bb13f231538d6a6f05d50"
+      }
+    ],
+    "implementationFilesUnchangedDuringRun": true,
+    "inputDigests": [
+      {
+        "path": "config/rpc-diagnostics.example.json",
+        "bytes": 497,
+        "sha256": "fe06ba18da7364e9678ab61713fe366d91ae1cc1c78591969e4c812dae4db046"
+      },
+      {
+        "path": "examples/request.json",
+        "bytes": 169,
+        "sha256": "98b9bff9897d66743a04abeb8425bbab6688b995c4148425509405d4a5706ab1"
+      }
+    ],
+    "inputFilesUnchangedDuringRun": true,
+    "sourceConfiguration": {
+      "schemaVersion": "1",
+      "registry": {
+        "chainId": 11155111,
+        "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+        "fromBlock": "11353452",
+        "expectedCodeHash": "0xcf6373071bf2a31293ce508c6b711c1886b6019cf963acf7919fbaefde8bd5db"
+      },
+      "sources": [
+        {
+          "id": "primary",
+          "rpcEnv": "SEPOLIA_RPC_PRIMARY"
+        },
+        {
+          "id": "secondary",
+          "rpcEnv": "SEPOLIA_RPC_SECONDARY"
+        }
+      ],
+      "limits": {
+        "maxRequests": 128,
+        "requestTimeoutMs": 10000,
+        "totalTimeoutMs": 45000
+      }
+    },
+    "networkInvocation": "Unmodified CLI with public HTTPS RPC environment variables. No transport injection, safety-policy bypass, URL substitution or provider retry was used."
+  },
+  "rpcSources": [
+    {
+      "id": "primary",
+      "provider": "PublicNode",
+      "rpcEnv": "SEPOLIA_RPC_PRIMARY",
+      "publicRpcUrl": "https://ethereum-sepolia-rpc.publicnode.com",
+      "officialReferences": [
+        "https://ethereum.publicnode.com/"
+      ],
+      "endpointRegistryReference": "https://github.com/ethereum-lists/chains/blob/master/_data/chains/eip155-11155111.json"
+    },
+    {
+      "id": "secondary",
+      "provider": "Pocket Network",
+      "rpcEnv": "SEPOLIA_RPC_SECONDARY",
+      "publicRpcUrl": "https://eth-sepolia-testnet.api.pocket.network",
+      "officialReferences": [
+        "https://docs.pocket.network/developers/supported-chains/",
+        "https://api.pocket.network/"
+      ]
+    }
+  ],
+  "requestCounts": {
+    "primary": 8,
+    "secondary": 8
+  },
+  "totalRequestCount": 16,
+  "requestCountMeaning": "Counts are the actual bounded RPC transport invocation attempts reported by the unchanged diagnostic. They include preliminary chain/finalized queries and any collection queries; they are not a claim that every request received a successful HTTP or JSON-RPC response.",
+  "sourceOutcomes": [
+    {
+      "id": "primary",
+      "code": "RPC_UNAVAILABLE",
+      "requestCount": 8,
+      "finalizedBlock": {
+        "number": "11872534",
+        "hash": "0x74d96f8d36f6e0da199abdc8ed2d58dbfcc648667e2283075070e8bf34f1fa94",
+        "timestamp": "1791491028"
+      },
+      "reportVerdict": null,
+      "eventCount": null
+    },
+    {
+      "id": "secondary",
+      "code": "RPC_UNAVAILABLE",
+      "requestCount": 8,
+      "finalizedBlock": {
+        "number": "11872534",
+        "hash": "0x74d96f8d36f6e0da199abdc8ed2d58dbfcc648667e2283075070e8bf34f1fa94",
+        "timestamp": "1791491028"
+      },
+      "reportVerdict": null,
+      "eventCount": null
+    }
+  ],
+  "diagnosticDigest": {
+    "path": "evidence/week4-live-diagnostic.json",
+    "bytes": 1825,
+    "sha256": "9e9795867cab7dcda5b4d51c1971361c125bb0d0c035223e1bf9b48bda7ae147"
+  },
+  "rerunReason": "A new total-deadline enforcement fix and regression test were added after the initial observation. This is a fresh network run of the frozen final implementation; the earlier observation remains preserved separately and its implementation digests were not rewritten.",
+  "limitations": [
+    "This is a fresh read-only command-line diagnostic, not a paid API invocation, wallet action, payment receipt, settlement proof, deployment proof or bounty acceptance.",
+    "Provider agreement is a comparison of two observations, not independent proof of chain truth, consensus, finality or complete history; providers may share underlying infrastructure or omit the same data.",
+    "A source can fail before the common finalized height is selected. Missing selectedBlock or missing report remains unavailable and is not replaced by older evidence.",
+    "UTC capture times above are actual client wall-clock observations. Chain block timestamps are separate RPC-returned data.",
+    "Only the two explicitly configured public endpoints were attempted. No keys, tokens, private URLs or unrelated environment values were saved.",
+    "No raw HTTP response bodies or per-method traffic transcript is retained; request counts come from the diagnostic output."
+  ]
+}

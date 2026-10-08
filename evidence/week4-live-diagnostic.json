@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "status": "unavailable",
+  "code": "SOURCE_UNAVAILABLE",
+  "request": {
+    "chainId": 11155111,
+    "registry": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+    "spaceId": "0xfbe20b841e2cb8d5e8094da6a9be9ebe19bb4d52c6155f465b40aa7bf1c13564"
+  },
+  "selectedBlock": {
+    "number": "11872534"
+  },
+  "sources": [
+    {
+      "id": "primary",
+      "code": "RPC_UNAVAILABLE",
+      "requestCount": 8,
+      "finalizedBlock": {
+        "number": "11872534",
+        "hash": "0x74d96f8d36f6e0da199abdc8ed2d58dbfcc648667e2283075070e8bf34f1fa94",
+        "timestamp": "1791491028"
+      }
+    },
+    {
+      "id": "secondary",
+      "code": "RPC_UNAVAILABLE",
+      "requestCount": 8,
+      "finalizedBlock": {
+        "number": "11872534",
+        "hash": "0x74d96f8d36f6e0da199abdc8ed2d58dbfcc648667e2283075070e8bf34f1fa94",
+        "timestamp": "1791491028"
+      }
+    }
+  ],
+  "comparison": {
+    "performed": false,
+    "differences": [],
+    "missingFromPrimary": [],
+    "missingFromSecondary": [],
+    "changedEvents": []
+  },
+  "limitations": [
+    "This compares two RPC observations at one selected finalized height. Agreement is not proof of on-chain truth, consensus, finality, or complete event history; providers may share infrastructure or omit the same data.",
+    "Agree describes source agreement, not a correct history. Inspect each report verdict and checks: both sources can agree on inconsistent evidence.",
+    "Each source is collected and replayed separately. Events are never merged, missing evidence is never filled from another source, and no winning provider is selected.",
+    "Finalized tags, block headers and runtime code are RPC claims. Memory truth, historical code identity, signatures, payment settlement and hosted service availability are not verified."
+  ]
+}

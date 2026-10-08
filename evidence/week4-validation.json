@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "1",
+  "validatedAt": "2026-10-08T20:42:55.669Z",
+  "basePublicRevision": "543589c0ec6da63ed3f44d985c7579b86d67f0d0",
+  "statisticalWeek": {
+    "number": 4,
+    "from": "2026-10-05",
+    "to": "2026-10-11",
+    "timezone": "Asia/Shanghai"
+  },
+  "validation": {
+    "typecheck": "passed",
+    "build": "passed",
+    "tests": 218,
+    "passed": 218,
+    "failed": 0,
+    "skipped": 0,
+    "addedSinceWeek3": 32,
+    "diagnosticCoreTests": 23,
+    "diagnosticCliTests": 9,
+    "diffCheck": "passed"
+  },
+  "readOnlyLiveExecution": {
+    "diagnostic": "evidence/week4-live-diagnostic.json",
+    "capture": "evidence/week4-live-capture.json",
+    "status": "unavailable",
+    "code": "SOURCE_UNAVAILABLE",
+    "exitCode": 2,
+    "selectedBlock": {
+      "number": "11872534"
+    },
+    "sourceOutcomes": [
+      {
+        "id": "primary",
+        "code": "RPC_UNAVAILABLE",
+        "requestCount": 8
+      },
+      {
+        "id": "secondary",
+        "code": "RPC_UNAVAILABLE",
+        "requestCount": 8
+      }
+    ],
+    "comparisonPerformed": false
+  },
+  "sourceDigests": [
+    {
+      "path": "src/rpc-diagnostics.ts",
+      "sha256": "8f53c3dd9e9850f36a41d1bc0974f2039a5451bfdbce005f3bf481db12d68ea2"
+    },
+    {
+      "path": "src/diagnostic-config.ts",
+      "sha256": "00ac6b51afbc3e36f0a467995333eb0b92416cff04b8b8fb4715bf2c385104a6"
+    },
+    {
+      "path": "src/rpc.ts",
+      "sha256": "1bc90388d068013a93f2d31c7a51f92fa1a54a33b4703e11cb29da374a5a040d"
+    },
+    {
+      "path": "scripts/rpc-diagnose.ts",
+      "sha256": "04d1a0b505070fb730be09d48fcc700121cea5b2297ca9cf36bfd398c5695d94"
+    },
+    {
+      "path": "config/rpc-diagnostics.example.json",
+      "sha256": "fe06ba18da7364e9678ab61713fe366d91ae1cc1c78591969e4c812dae4db046"
+    },
+    {
+      "path": "test/rpc-diagnostics.test.ts",
+      "sha256": "4baec8f28d5f85fd144e3f0005fb449e1be4fc0c33b08d5f1c7377cf5fd7b345"
+    },
+    {
+      "path": "test/rpc-diagnose-cli.test.ts",
+      "sha256": "8c2d3c31b09b13ef9934b9041d8f5ab2adf37ff562b7f4a4e10044f02d69a746"
+    },
+    {
+      "path": "package.json",
+      "sha256": "c93f8aa6ad5caffd9c1e88c1293c67e3cccbf1ca7a246ced631c1e79a42659f9"
+    },
+    {
+      "path": "evidence/week4-live-diagnostic.json",
+      "sha256": "9e9795867cab7dcda5b4d51c1971361c125bb0d0c035223e1bf9b48bda7ae147"
+    },
+    {
+      "path": "evidence/week4-live-capture.json",
+      "sha256": "e74947c81ed53f51cf0ef9d5cb6798441da5deca363d09012ab489762a3d2878"
+    }
+  ],
+  "limitations": [
+    "Provider agreement is not proof of chain truth, consensus, finality, or complete event history.",
+    "The fresh live run could not complete historical collection and did not produce history reports or compare event histories.",
+    "Automated payments are simulated; no public deployment or real participant paid call was completed.",
+    "Weekly bounty approval and reward eligibility are determined by activity reviewers."
+  ]
+}
