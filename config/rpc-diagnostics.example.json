@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1",
+  "registry": {
+    "chainId": 11155111,
+    "address": "0xDdf21937ba80b5fF973610877A0955b320C91241",
+    "fromBlock": "11353452",
+    "expectedCodeHash": "0xcf6373071bf2a31293ce508c6b711c1886b6019cf963acf7919fbaefde8bd5db"
+  },
+  "sources": [
+    { "id": "primary", "rpcEnv": "SEPOLIA_RPC_PRIMARY" },
+    { "id": "secondary", "rpcEnv": "SEPOLIA_RPC_SECONDARY" }
+  ],
+  "limits": {
+    "maxRequests": 128,
+    "requestTimeoutMs": 10000,
+    "totalTimeoutMs": 45000
+  }
+}
